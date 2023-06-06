@@ -1,33 +1,42 @@
 const { WebcastPushConnection } = require('tiktok-live-connector');
 const db = require("./db");
+const dbA = require("../db/config");
 
 
-module.exports = function(io) {
+module.exports = async function(io) {
     var socket = io;
-    // Username of someone who is currently live
-    let tiktokUsername = "upfollowers.gacor";
 
-    // Create a new wrapper object and pass the username
-    let tiktokLiveConnection = new WebcastPushConnection(tiktokUsername);
+    var tiktokUsernames = await dbA.accounts.findAll();
+    for (let i = 0; i < tiktokUsernames.length; i++) {
+        const tiktokUsername = tiktokUsernames[i].account;
+        const status = tiktokUsernames[i].status;
+        const isRunning = tiktokUsernames[i].isRunning;
+        const account_id_key = tiktokUsernames[i].account_id_key
 
-    // Connect to the chat (await can be used as well)
-    tiktokLiveConnection.connect().then(state => {
-        // console.info(`Connected to roomId ${state.roomId}`);
-        // console.info(state);
-    }).catch(err => {
-        console.error('Failed to connect', err);
-    })
+        if(isRunning != 1){
+            var tiktokLiveConnection = new WebcastPushConnection(tiktokUsername);
 
-    // Define the events that you want to handle
-    // In this case we listen to chat messages (comments)
-    tiktokLiveConnection.on('chat',  async (data) => {
-        await db.insertChat(data, socket);
-    })
+            if(status == 1){
+                tiktokLiveConnection.connect().then(state => {
+                    console.info(`Connected to ${tiktokUsername} ${state.roomId}`);
+                }).catch(err => {
+                    console.error('Failed to connect', err);
+                })
 
-    // And here we receive gifts sent to the streamer
-    tiktokLiveConnection.on('gift', async (data) => {
-        // console.log(`${data.uniqueId} (userId:${data.userId}) sends ${data.giftId}`);
-        // console.log(data);
-        await db.insertGift(data, socket);
-    })
+                tiktokLiveConnection.on('chat',  async (data) => {
+                    console.log(data)
+                    await db.insertChat(data, tiktokUsername, socket);
+                })
+
+                tiktokLiveConnection.on('gift', async (data) => {
+                    // console.log(data)
+                    await db.insertGift(data, tiktokUsername, socket);
+                });
+
+                await dbA.accounts.update({isRunning : 1}, { where : { account_id_key : account_id_key }});
+            }else{
+                tiktokLiveConnection.disconnect();
+            }
+        }
+    }
 }

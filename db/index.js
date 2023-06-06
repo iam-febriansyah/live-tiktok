@@ -2,7 +2,7 @@ async function dbAccess(db) {
   try {
     await db.sequelize.authenticate().then(function (err) {
       if (!err) {
-        db.sequelize.sync({ force: true}).then(() => {
+        db.sequelize.sync({ force: true }).then(() => {
           console.log(db.name + " Main Database already connected!");
         });
       }

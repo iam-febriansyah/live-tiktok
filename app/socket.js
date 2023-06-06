@@ -1,12 +1,12 @@
-function emitChat(io, data) {
+function emitChat(io, data, account) {
   if (io != null || typeof io != "undefined") {
-    io.emit("chat", data);
+    io.emit("chat_"+account, data);
   }
 }
 
-function emitGift(io, data) {
+function emitGift(io, data, account) {
   if (io != null || typeof io != "undefined") {
-    io.emit("gift", data);
+    io.emit("gift_"+account, data);
   }
 }
 

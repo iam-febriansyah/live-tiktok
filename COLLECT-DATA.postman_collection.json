@@ -6,13 +6,100 @@
 	},
 	"item": [
 		{
+			"name": "ADD",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\" : \"upfollowers.gacor\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:2039/api/add",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "2039",
+					"path": [
+						"api",
+						"add"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "NON ACTIVE",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\" : \"upfollowers.gacor\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:2039/api/non-active",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "2039",
+					"path": [
+						"api",
+						"non-active"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ACTIVE",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\" : \"upfollowers.gacor\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:2039/api/active",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "2039",
+					"path": [
+						"api",
+						"active"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "CHATS",
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"limit\" : 100\r\n}",
+					"raw": "{\r\n    \"limit\" : 100,\r\n    \"username\" : \"upfollowers.gacor\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -41,7 +128,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"limit\" : 100\r\n}",
+					"raw": "{\r\n    \"limit\" : 100,\r\n    \"username\" : \"upfollowers.gacor\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
