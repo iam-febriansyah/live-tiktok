@@ -79,6 +79,10 @@ module.exports = (sequelize, Sequelize) => {
                 type: Sequelize.INTEGER,
                 allowNull: false,
             },
+            createdAt: {
+                type: 'TIMESTAMP',
+                allowNull: false,
+            },
         },
         {
             timestamps: false,

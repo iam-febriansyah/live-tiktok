@@ -59,6 +59,7 @@ const insertGift = async (data, io) => {
     var res = await db.gifts.create(dataInsert);
     if(data.monitorExtra){
         data.monitorExtra.gift_id_key = gift_id_key;
+        data.monitorExtra.createdAt = createdAt;
         res.extra = await insertGiftExtra(data.monitorExtra);
     }
     socket.emitGift(io, res);
@@ -86,14 +87,21 @@ const insertGiftExtra = async (data) => {
         log_id: data.log_id,
         room_id: data.room_id,
         from_user_id: data.from_user_id,
-        msg_id: data.msg_id
+        msg_id: data.msg_id,
+        createdAt: data.createdAt
     }
     var res = await db.gift_extras.create(dataInsert);
     return res;
 }
 
+const destroyDb = async () => {
+   await db.chats.destroy({ truncate : true, cascade: false });
+   await db.gift_extras.destroy({ truncate : true, cascade: false });
+   await db.gifts.destroy({ truncate : true, cascade: false });
+}
 
 module.exports = {
     insertChat,
-    insertGift
+    insertGift,
+    destroyDb
 };

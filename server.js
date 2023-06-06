@@ -6,6 +6,9 @@ var cors = require("cors");
 var bodyParser = require("body-parser");
 var server = require("http").createServer(app);
 const methodOverride = require("method-override");
+const cron = require("node-cron");
+const help = require("./app/helper");
+const db = require("./app/db");
 
 var io = require("socket.io")(server, {
   cors: {
@@ -48,5 +51,21 @@ app.use("/", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 require('./app/live')(io);
 
+
+var cronStatus = {};
+var cronStorage = {};
+async function cronFunction(time, timeTxt) {
+  var variableName = timeTxt;
+  cronStatus[variableName] = true;
+  var task = cron.schedule(time, async () => {
+    var dateNow = help.dateTimeNow()
+    if(timeTxt == '1am'){
+      db.destroyDb();
+    }
+    cronStorage[`${timeTxt}${dateNow}`] = task;
+  });
+}
+
+cronFunction("0 1 * * *", '1am'); /*every at 1am*/
 
 module.exports = { app, server };
