@@ -52,7 +52,7 @@ module.exports = {
         include : [
           { model: db.gift_extras, required: false },
         ],
-        order: [[sequelize.col("createdAt"), "DESC"]], 
+        order: [[sequelize.col("gifts.createdAt"), "DESC"]], 
       });
       res.send({ status: true, remarks: "Successfuly get gift list", data: datas });
     } catch (err) {
