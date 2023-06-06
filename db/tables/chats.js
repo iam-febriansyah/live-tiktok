@@ -7,6 +7,10 @@ module.exports = (sequelize, Sequelize) => {
                 primaryKey: true,
                 allowNull: false,
             },
+            account: {
+                type: Sequelize.STRING,
+                allowNull: false,
+            },
             comment: {
                 type: Sequelize.TEXT,
                 allowNull: true,
@@ -29,6 +33,22 @@ module.exports = (sequelize, Sequelize) => {
             },
             nickname: {
                 type: Sequelize.STRING,
+                allowNull: false,
+            },
+            followRole: {
+                type: Sequelize.INTEGER,
+                allowNull: false,
+            },
+            isModerator: {
+                type: Sequelize.BOOLEAN,
+                allowNull: false,
+            },
+            isNewGifter: {
+                type: Sequelize.BOOLEAN,
+                allowNull: false,
+            },
+            isSubscriber: {
+                type: Sequelize.BOOLEAN,
                 allowNull: false,
             },
             profilePictureUrl: {

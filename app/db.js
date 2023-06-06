@@ -9,11 +9,12 @@ const help = require("./helper");
 const Op = db.Sequelize.Op;
 
 
-const insertChat = async (data, io) => {
+const insertChat = async (data, account, io) => {
     var createdAt = help.dateToString(parseInt(data.createTime))
     var chat_id_key = uuidv1();
     var dataInsert = {
         chat_id_key : chat_id_key,
+        account: account,
         msgId: data.msgId,
         secUid: data.secUid,
         userId: data.userId,
@@ -22,18 +23,23 @@ const insertChat = async (data, io) => {
         profilePictureUrl: data.profilePictureUrl,
         createTime: data.createTime,
         comment: data.comment,
+        followRole: data.followRole,
+        isModerator: data.isModerator,
+        isNewGifter: data.isNewGifter,
+        isSubscriber: data.isSubscriber,
         createdAt: createdAt
     }
+    socket.emitChat(io, dataInsert, account);
     var res = await db.chats.create(dataInsert);
-    socket.emitChat(io, res);
     return res;
 };
 
-const insertGift = async (data, io) => {
+const insertGift = async (data, account, io) => {
     var createdAt = help.dateToString(data.timestamp)
     var gift_id_key = uuidv1();
     var dataInsert = {
         gift_id_key: gift_id_key,
+        account: account,
         msgId: data.msgId,
         giftId: data.giftId,
         repeatCount: data.repeatCount,
@@ -62,7 +68,7 @@ const insertGift = async (data, io) => {
         data.monitorExtra.createdAt = createdAt;
         res.extra = await insertGiftExtra(data.monitorExtra);
     }
-    socket.emitGift(io, res);
+    socket.emitGift(io, res, account);
     return res;
 };
 

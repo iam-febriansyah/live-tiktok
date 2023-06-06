@@ -20,6 +20,7 @@ db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 db.name = process.env.NAME_DB;
 
+db.accounts = require("./tables/accounts")(sequelize, Sequelize, DataTypes);
 db.chats = require("./tables/chats")(sequelize, Sequelize, DataTypes);
 db.gifts = require("./tables/gifts")(sequelize, Sequelize, DataTypes);
 db.gift_extras = require("./tables/gift_extras")(sequelize, Sequelize, DataTypes);

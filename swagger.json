@@ -18,6 +18,96 @@
     "application/json"
   ],
   "paths": {
+    "/add": {
+      "post": {
+        "summary": "ADD",
+        "tags": [
+          "Misc"
+        ],
+        "operationId": "ADD",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Body",
+            "in": "body",
+            "required": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ADDREQUEST"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        }
+      }
+    },
+    "/non-active": {
+      "post": {
+        "summary": "NON ACTIVE",
+        "tags": [
+          "Misc"
+        ],
+        "operationId": "NONACTIVE",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Body",
+            "in": "body",
+            "required": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/NONACTIVEREQUEST"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        }
+      }
+    },
+    "/active": {
+      "post": {
+        "summary": "ACTIVE",
+        "tags": [
+          "Misc"
+        ],
+        "operationId": "ACTIVE",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Body",
+            "in": "body",
+            "required": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ACTIVEREQUEST"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        }
+      }
+    },
     "/chats": {
       "post": {
         "summary": "CHATS",
@@ -80,36 +170,91 @@
     }
   },
   "definitions": {
+    "ADDREQUEST": {
+      "title": "ADDREQUEST",
+      "example": {
+        "username": "upfollowers.gacor"
+      },
+      "type": "object",
+      "properties": {
+        "username": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "username"
+      ]
+    },
+    "NONACTIVEREQUEST": {
+      "title": "NONACTIVEREQUEST",
+      "example": {
+        "username": "upfollowers.gacor"
+      },
+      "type": "object",
+      "properties": {
+        "username": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "username"
+      ]
+    },
+    "ACTIVEREQUEST": {
+      "title": "ACTIVEREQUEST",
+      "example": {
+        "username": "upfollowers.gacor"
+      },
+      "type": "object",
+      "properties": {
+        "username": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "username"
+      ]
+    },
     "CHATSREQUEST": {
       "title": "CHATSREQUEST",
       "example": {
-        "limit": 100
+        "limit": 100,
+        "username": "upfollowers.gacor"
       },
       "type": "object",
       "properties": {
         "limit": {
           "type": "integer",
           "format": "int32"
+        },
+        "username": {
+          "type": "string"
         }
       },
       "required": [
-        "limit"
+        "limit",
+        "username"
       ]
     },
     "GIFTSREQUEST": {
       "title": "GIFTSREQUEST",
       "example": {
-        "limit": 100
+        "limit": 100,
+        "username": "upfollowers.gacor"
       },
       "type": "object",
       "properties": {
         "limit": {
           "type": "integer",
           "format": "int32"
+        },
+        "username": {
+          "type": "string"
         }
       },
       "required": [
-        "limit"
+        "limit",
+        "username"
       ]
     }
   },

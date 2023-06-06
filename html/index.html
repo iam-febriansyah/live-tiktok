@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <style>
+    .scroll{
+        max-height: 500px;
+        overflow-y: scroll;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-6 scroll" style="background-color:lavender;" id="chat"></div>
+    <div class="col-sm-6 scroll" style="background-color:lavenderblush;" id="gift"></div>
+  </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.6.2/socket.io.js" integrity="sha512-jMNwWSmjje4fjYut9MBGKXw5FZA6D67NHAuC9szpjbbjg51KefquNfvn4DalCbGfkcv/jHsHnPo1o47+8u4biA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script>
+    var chat = document.getElementById('chat');
+    var gift = document.getElementById('gift');
+    var baseurlDomain = 'http://localhost:2039';
+    const socket = io(baseurlDomain);
+    socket.on('chat_upfollowers.gacor', function(data) {
+        var nickname = data.nickname;
+        var comment = data.comment;
+        var createdAt = data.createdAt;
+        var html = '<b>'+nickname+'</b><br>';
+            html += '<small>'+createdAt+'</small><br>';
+            html += '<p>'+comment+'</p>';
+        chat.innerHTML += html;
+    });
+    socket.on('gift_upfollowers.gacor', function(data) {
+        var nickname = data.nickname;
+        var giftName = data.giftName;
+        var createdAt = data.createdAt;
+        var html = '<b>'+nickname+'</b><br>';
+            html += '<small>'+createdAt+'</small><br>';
+            html += '<p>'+giftName+'</p>';
+        gift.innerHTML += html;
+    });
+</script>
+
+</body>
+</html>
