@@ -12,4 +12,9 @@ node_modules
 ./public/uploads
 /public/uploads
 
+*.sqlite
+./db/database.sqlite
+/db/database.sqlite
+
+
 
