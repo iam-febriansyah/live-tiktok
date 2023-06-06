@@ -75,6 +75,13 @@ async function cronFunction(time, timeTxt) {
 cronFunction("0 1 * * *", '1am'); /*every at 1am*/
 
 function html(account){
+  var http = process.env.HTTP;
+  var baseurl = process.env.BASEURL;
+  var port = process.env.PORT;
+  var domain = `${http}://${baseurl}`;
+  if(port != '' && typeof port != 'undefined'){
+    domain += `${domain}:${port}`
+  }
   return `<!DOCTYPE html>
           <html lang="en">
           <head>
@@ -104,7 +111,7 @@ function html(account){
           <script>
               var chat = document.getElementById('chat');
               var gift = document.getElementById('gift');
-              var baseurlDomain = 'http://localhost:2039';
+              var baseurlDomain = '${domain}';
               const socket = io(baseurlDomain);
               socket.on('chat_${account}', function(data) {
                   var nickname = data.nickname;
