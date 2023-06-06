@@ -7,6 +7,10 @@ module.exports = (sequelize, Sequelize) => {
                 primaryKey: true,
                 allowNull: false,
             },
+            comment: {
+                type: Sequelize.TEXT,
+                allowNull: true,
+            },
             msgId: {
                 type: Sequelize.STRING,
                 allowNull: false,
@@ -33,6 +37,10 @@ module.exports = (sequelize, Sequelize) => {
             },
             createTime: {
                 type: Sequelize.STRING,
+                allowNull: false,
+            },
+            createdAt: {
+                type: 'TIMESTAMP',
                 allowNull: false,
             },
         },

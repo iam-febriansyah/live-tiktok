@@ -59,15 +59,24 @@ function baseurl(req) {
     var hostname = req.headers.host;
     return process.env.HTTP + "" + hostname;
 }
-
-async function isEmailValid(email) {
-    return emailValidator.validate(email)
-}
+const dateToString = (date) => {
+    let today = new Date(date);
+    // today.setHours(today.getHours() + 7);
+    let dd = String(today.getDate()).padStart(2, "0");
+    let mm = String(today.getMonth() + 1).padStart(2, "0");
+    let yyyy = today.getFullYear();
+    let hh = String(today.getHours()).padStart(2, "0");
+    let ii = String(today.getMinutes()).padStart(2, "0");
+    let ss = String(today.getSeconds()).padStart(2, "0");
+    today = `${yyyy}-${mm}-${dd} ${hh}:${ii}:${ss}`;
+    return today;
+  };
 
 module.exports = {
     dateTimeNow,
     randonAlpha,
     randonNum,
     randonNumAlpha,
-    baseurl
+    baseurl,
+    dateToString
 };

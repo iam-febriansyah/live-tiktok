@@ -5,10 +5,12 @@ const { v1: uuidv1 } = require("uuid");
 
 const db = require("../db/config");
 const socket = require("./socket");
+const help = require("./helper");
 const Op = db.Sequelize.Op;
 
 
 const insertChat = async (data, io) => {
+    var createdAt = help.dateToString(parseInt(data.createTime))
     var chat_id_key = uuidv1();
     var dataInsert = {
         chat_id_key : chat_id_key,
@@ -19,6 +21,8 @@ const insertChat = async (data, io) => {
         nickname: data.nickname,
         profilePictureUrl: data.profilePictureUrl,
         createTime: data.createTime,
+        comment: data.comment,
+        createdAt: createdAt
     }
     var res = await db.chats.create(dataInsert);
     socket.emitChat(io, res);
@@ -26,6 +30,7 @@ const insertChat = async (data, io) => {
 };
 
 const insertGift = async (data, io) => {
+    var createdAt = help.dateToString(data.timestamp)
     var gift_id_key = uuidv1();
     var dataInsert = {
         gift_id_key: gift_id_key,
@@ -49,6 +54,7 @@ const insertGift = async (data, io) => {
         giftPictureUrl: data.giftPictureUrl,
         timestamp: data.timestamp,
         receiverUserId: data.receiverUserId,
+        createdAt: createdAt
     }
     var res = await db.gifts.create(dataInsert);
     if(data.monitorExtra){

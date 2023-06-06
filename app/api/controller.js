@@ -4,6 +4,7 @@ dotenv.config();
 /**Database */
 const db = require("../../db/config");
 const Op = db.Sequelize.Op;
+const sequelize = db.sequelize;
 
 /**Library */
 const { QueryTypes } = require("sequelize");
@@ -26,7 +27,8 @@ module.exports = {
       }
       var datas = await db.chats.findAll({
         limit: limit,
-        subQuery: false
+        subQuery: false,
+        order: [[sequelize.col("createdAt"), "DESC"]], 
       });
       res.send({ status: true, remarks: "Successfuly get chat list", data: datas });
     } catch (err) {
@@ -49,7 +51,8 @@ module.exports = {
         subQuery: false,
         include : [
           { model: db.gift_extras, required: false },
-        ]
+        ],
+        order: [[sequelize.col("createdAt"), "DESC"]], 
       });
       res.send({ status: true, remarks: "Successfuly get gift list", data: datas });
     } catch (err) {

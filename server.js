@@ -40,12 +40,13 @@ app.use(async function (req, res, next) {
 const swaggerUi = require("swagger-ui-express");
 const swaggerDocument = require("./swagger.json");
 
-require('./app/live')(io);
 
 var apiRoute = require("./app/api/router.js");
 require("./db/index.js")(app);
 app.use("/api", apiRoute);
 app.use("/", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
+require('./app/live')(io);
 
 
 module.exports = { app, server };
