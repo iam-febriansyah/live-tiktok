@@ -30,8 +30,8 @@ const insertChat = async (data, account, io) => {
         createdAt: createdAt
     }
     socket.emitChat(io, dataInsert, account);
-    var res = await db.chats.create(dataInsert);
-    return res;
+    // var res await db.chats.create(dataInsert);
+    return dataInsert;
 };
 
 const insertGift = async (data, account, io) => {
@@ -62,11 +62,32 @@ const insertGift = async (data, account, io) => {
         receiverUserId: data.receiverUserId,
         createdAt: createdAt
     }
-    var res = await db.gifts.create(dataInsert);
+    // var res = await db.gifts.create(dataInsert);
+    var res = dataInsert;
     if(data.monitorExtra){
-        data.monitorExtra.gift_id_key = gift_id_key;
-        data.monitorExtra.createdAt = createdAt;
-        res.extra = await insertGiftExtra(data.monitorExtra);
+        // data.monitorExtra.gift_id_key = gift_id_key;
+        // data.monitorExtra.createdAt = createdAt;
+        // res.extra = await insertGiftExtra(data.monitorExtra);
+        res.extra = {
+            gift_id_key: gift_id_key,
+            repeat_end: data.monitorExtra.repeat_end,
+            to_user_id: data.monitorExtra.to_user_id,
+            gift_type: data.monitorExtra.gift_type,
+            send_gift_send_message_success_ms: data.monitorExtra.send_gift_send_message_success_ms,
+            gift_id: data.monitorExtra.gift_id,
+            anchor_id: data.monitorExtra.anchor_id,
+            from_idc: data.monitorExtra.from_idc,
+            repeat_count: data.monitorExtra.repeat_count,
+            send_gift_profit_api_start_ms: data.monitorExtra.send_gift_profit_api_start_ms ?? 0,
+            send_gift_req_start_ms: data.monitorExtra.send_gift_req_start_ms ?? 0,
+            send_gift_profit_core_start_ms: data.monitorExtra.send_gift_profit_core_start_ms ?? 0,
+            profitapi_message_dur: data.monitorExtra.profitapi_message_dur ?? 0,
+            send_profitapi_dur: data.monitorExtra.send_profitapi_dur ?? 0,
+            log_id: data.monitorExtra.log_id,
+            room_id: data.monitorExtra.room_id,
+            from_user_id: data.monitorExtra.from_user_id,
+            msg_id: data.monitorExtra.msg_id,
+        }
     }
     socket.emitGift(io, res, account);
     return res;
@@ -96,7 +117,7 @@ const insertGiftExtra = async (data) => {
         msg_id: data.msg_id,
         createdAt: data.createdAt
     }
-    var res = await db.gift_extras.create(dataInsert);
+    var res// = await db.gift_extras.create(dataInsert);
     return res;
 }
 
