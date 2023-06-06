@@ -78,7 +78,7 @@ function html(account){
   var http = process.env.HTTP;
   var baseurl = process.env.BASEURL;
   var port = process.env.PORT;
-  var domain = `${http}://${baseurl}`;
+  var domain = `${http}${baseurl}`;
   if(port != '' && typeof port != 'undefined'){
     domain += `${domain}:${port}`
   }
