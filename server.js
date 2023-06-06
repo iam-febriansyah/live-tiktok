@@ -80,7 +80,7 @@ function html(account){
   var port = process.env.PORT;
   var domain = `${http}${baseurl}`;
   if(port != '' && typeof port != 'undefined'){
-    domain += `${domain}:${port}`
+    domain = `${domain}:${port}`
   }
   return `<!DOCTYPE html>
           <html lang="en">

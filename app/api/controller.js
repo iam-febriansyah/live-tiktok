@@ -91,16 +91,17 @@ module.exports = {
     console.log("POST CHAT LIST");
     try {
       var { limit, username } = req.body;
-      if(typeof limit == "undefined" || limit == ""){
-        limit = 1000;
-      }
-      var datas = await db.chats.findAll({
-        where : { account : username },
-        limit: limit,
-        subQuery: false,
-        order: [[sequelize.col("createdAt"), "DESC"]], 
-      });
-      res.send({ status: true, remarks: "Successfuly get chat list", data: datas });
+      // if(typeof limit == "undefined" || limit == ""){
+      //   limit = 1000;
+      // }
+      // var datas = await db.chats.findAll({
+      //   where : { account : username },
+      //   limit: limit,
+      //   subQuery: false,
+      //   order: [[sequelize.col("createdAt"), "DESC"]], 
+      // });
+      // res.send({ status: true, remarks: "Successfuly get chat list", data: datas });
+      res.send({ status: false, remarks: "API under maintenance", data: [] });
     } catch (err) {
       if (err.message) {
         err = err.message;
@@ -113,19 +114,20 @@ module.exports = {
     console.log("POST GIFT LIST");
     try {
       var { limit, username } = req.body;
-      if(typeof limit == "undefined" || limit == ""){
-        limit = 1000;
-      }
-      var datas = await db.gifts.findAll({
-        where : { account : username },
-        limit: limit,
-        subQuery: false,
-        include : [
-          { model: db.gift_extras, required: false },
-        ],
-        order: [[sequelize.col("gifts.createdAt"), "DESC"]], 
-      });
-      res.send({ status: true, remarks: "Successfuly get gift list", data: datas });
+      // if(typeof limit == "undefined" || limit == ""){
+      //   limit = 1000;
+      // }
+      // var datas = await db.gifts.findAll({
+      //   where : { account : username },
+      //   limit: limit,
+      //   subQuery: false,
+      //   include : [
+      //     { model: db.gift_extras, required: false },
+      //   ],
+      //   order: [[sequelize.col("gifts.createdAt"), "DESC"]], 
+      // });
+      // res.send({ status: true, remarks: "Successfuly get gift list", data: datas });
+      res.send({ status: false, remarks: "API under maintenance", data: [] });
     } catch (err) {
       if (err.message) {
         err = err.message;
