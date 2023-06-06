@@ -1,4 +1,4 @@
-const emailValidator = require('deep-email-validator');
+require("dotenv").config();
 
 const dateTimeNow = (now = "") => {
     let today = now == "" ? new Date() : new Date(now);
