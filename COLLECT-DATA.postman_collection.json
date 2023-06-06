@@ -1,0 +1,67 @@
+{
+	"info": {
+		"_postman_id": "a5bccada-518a-41fa-acf3-062a9e1bcdb4",
+		"name": "COLLECT-DATA",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "CHATS",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"limit\" : 100\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:2039/api/chats",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "2039",
+					"path": [
+						"api",
+						"chats"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GIFTS",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"limit\" : 100\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:2039/api/gifts",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "2039",
+					"path": [
+						"api",
+						"gifts"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

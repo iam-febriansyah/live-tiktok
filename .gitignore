@@ -1,0 +1,15 @@
+node_modules
+./sessions
+/sessions
+
+./session_temps
+/session_temps
+
+.DS_STORE
+
+*.bak
+.env
+./public/uploads
+/public/uploads
+
+

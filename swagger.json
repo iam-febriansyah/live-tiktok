@@ -1,0 +1,122 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0",
+    "title": "COLLECT-DATA",
+    "contact": {}
+  },
+  "host": "localhost:2039",
+  "basePath": "/api",
+  "securityDefinitions": {},
+  "schemes": [
+    "http"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/chats": {
+      "post": {
+        "summary": "CHATS",
+        "tags": [
+          "Misc"
+        ],
+        "operationId": "CHATS",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Body",
+            "in": "body",
+            "required": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/CHATSREQUEST"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        }
+      }
+    },
+    "/gifts": {
+      "post": {
+        "summary": "GIFTS",
+        "tags": [
+          "Misc"
+        ],
+        "operationId": "GIFTS",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Body",
+            "in": "body",
+            "required": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/GIFTSREQUEST"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "CHATSREQUEST": {
+      "title": "CHATSREQUEST",
+      "example": {
+        "limit": 100
+      },
+      "type": "object",
+      "properties": {
+        "limit": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "required": [
+        "limit"
+      ]
+    },
+    "GIFTSREQUEST": {
+      "title": "GIFTSREQUEST",
+      "example": {
+        "limit": 100
+      },
+      "type": "object",
+      "properties": {
+        "limit": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "required": [
+        "limit"
+      ]
+    }
+  },
+  "tags": [
+    {
+      "name": "Misc",
+      "description": ""
+    }
+  ]
+}
