@@ -5,11 +5,11 @@
     "title": "COLLECT-DATA",
     "contact": {}
   },
-  "host": "localhost:2039",
+  "host": "live-tiktok.febriansyah.dev",
   "basePath": "/api",
   "securityDefinitions": {},
   "schemes": [
-    "http"
+    "https"
   ],
   "consumes": [
     "application/json"
