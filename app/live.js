@@ -24,7 +24,7 @@ module.exports = async function(io) {
                 })
 
                 tiktokLiveConnection.on('chat',  async (data) => {
-                    console.log(data)
+                    // console.log(data)
                     await db.insertChat(data, tiktokUsername, socket);
                 })
 
