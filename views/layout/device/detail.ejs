@@ -1,0 +1,203 @@
+<%- include('../../partials/header.ejs') %>
+<%- include('../../partials/topbar.ejs') %>
+<%- include('../../partials/sidebar.ejs') %>
+<style>
+  .text-right {
+    text-align: right;
+  }
+
+  .text-center {
+    text-align: center;
+  }
+</style>
+<div class="main-content">
+  <div class="page-content" style="background-color: #05a884;">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="card" id="leadsList">
+            <div class="card-body">
+              <div class="row" style="padding: 32px 32px 32px 32px;">
+                <div class="col-sm-8">
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <button class="btn btn-soft-<%-color%>"> DEVICE ID : <%-device.device_id%></button>
+                    </div>
+                    <div class="col-sm-6 text-right">
+                      <div class="btn-group" role="group" aria-label="Basic example">
+                        <button class="btn btn-<%-color%>" id="btnConnect"> <%-connect%></button>
+                        <% if(color == 'danger'){%>
+                        <button type="button" class="btn btn-dark" onclick="generateQr()"><i class="bx bx-refresh"></i></button>
+                        <% } %>
+                        <button type="button" class="btn btn-danger" onclick="deleteSession()"><i class="bx bxs-trash"></i></button>
+                      </div>
+                    </div>
+                  </div>
+                  <hr>
+                  <p style="font-size: 20px;">Untuk menggunakan WhatsApp API kamu harus memindai terlebih dahulu</p>
+                  <div style="font-size: 16px;">
+                    1. Buka WhatsApp di telepon Anda<br>
+                    2. Ketuk Menu atau Setelan dan pilih Perangkat Tertaut<br>
+                    3. Ketuk Tautkan Perangkat<br>
+                    4. Arahkan telepon Anda ke layar ini untuk memindai kode tersebut<br>
+                  </div>
+                </div>
+                <div class="col-sm-4">
+                  <div id='qrcode'>
+                    <img id="image" height="400" width="400" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="modal"></div>
+  <div id="modalLoading"></div>
+  <%- include('../../partials/footer.ejs') %>
+</div>
+<%- include('../../partials/customizer.ejs') %>
+<%- include('../../partials/vendor-scripts.ejs') %>
+
+<script type='text/javascript' src='https://cdn.jsdelivr.net/npm/toastify-js'></script>
+<script type='text/javascript' src='../assets/libs/choices.js/public/assets/scripts/choices.min.js'></script>
+<script type='text/javascript' src='../assets/libs/flatpickr/flatpickr.min.js'></script>
+<script src="../assets/libs/sortablejs/Sortable.min.js"></script>
+<script src="../assets/js/pages/nestable.init.js"></script>
+<script src="../assets/js/app.js"></script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/js/iziToast.min.js" integrity="sha512-Zq9o+E00xhhR/7vJ49mxFNJ0KQw1E1TMWkPTxrWcnpfEFDEXgUiwJHIKit93EW/XxE31HSI5GEOW06G6BF1AtA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/js/iziToast.js" integrity="sha512-OmBbzhZ6lgh87tQFDVBHtwfi6MS9raGmNvUNTjDIBb/cgv707v9OuBVpsN6tVVTLOehRFns+o14Nd0/If0lE/A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap4.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js" crossorigin="anonymous"></script>
+
+<!--GENERAL SCRIPT-->
+<script>
+  var versionUpdate = (new Date()).getTime();
+  var script = document.createElement("script");
+  script.type = "text/javascript";
+  script.src = "../assets/js/script.js";
+  document.body.appendChild(script);
+</script>
+
+<script>
+  var baseUrl = '<%- baseurl %>';
+  var baseUrlRestart = '<%- baseurlDomain %>/log'
+  var baseurlDomain = '<%- baseurlDomain %>';
+  const sekarang = '<%-  sekarang %>';
+  const socket = io(baseurlDomain);
+
+  window.addEventListener('load', async function() {
+    generateQr();
+    socket.on('status_connection', function(data) {
+      console.log(data)
+      console.log(data.text)
+      console.log(data.status)
+      if (data.status) {
+        var qrcode = document.getElementById("qrcode");
+        qrcode.style.display = 'none';
+        document.getElementById("btnConnect").classList.remove("btn-danger");
+        document.getElementById("btnConnect").classList.add("btn-success");
+        showSnackSuccess("Device already connected!")
+      }
+
+    });
+    socket.on('qr_generate', function(data) {
+      generateQR(data.qr);
+    });
+  })
+
+  async function detail(device_id) {
+    window.open(`${baseUrl}/detail?device_id=${device_id}`, '_blank');
+  }
+
+  async function generateQr() {
+    await showLoading("Please wait...");
+    var dataPost = {
+      id: '<%-device.device_id%>',
+      isLegacy: false,
+    }
+    var url = `${baseurlDomain}/add`;
+    var res = await ajaxPost(url, dataPost, "");
+    console.log(res)
+    if (res.success) {
+      var qr = res.data.qr;
+      generateQR(qr);
+    } else {
+      showSnackSuccess(res.message);
+    }
+    await dismisLoading();
+  }
+
+  async function restartPm2() {
+    await showLoading("Please wait...");
+    await restart();
+    await dismisLoading();
+  }
+
+  async function restart() {
+    var dataPost = {
+      id: 3
+    }
+    var url = `${baseurlDomain}/log/restart`;
+    var res = await ajaxPostWIthList(url, dataPost, "");
+  }
+
+  async function deleteSession() {
+    var dataPost = {
+      id: '<%-device.device_id%>'
+    }
+    var url = `${baseurlDomain}/del`;
+    var res = await ajaxPost(url, dataPost, "");
+    if (res.success) {
+      generateQr();
+    } else {
+      showSnackError(res.message);
+    }
+  }
+
+  function generateQR(data) {
+    var id = document.getElementById("image");
+    var qrcode = document.getElementById("qrcode");
+    console.log(data)
+    if (data != "") {
+      id.src = data;
+      qrcode.style.display = 'block';
+    } else {
+      qrcode.style.display = 'none';
+    }
+  }
+
+  async function ajaxPostWIthList(url, dataPost, btnId) {
+    return await Promise.resolve(
+      $.ajax({
+        url: url,
+        type: "post",
+        dataType: "json",
+        data: JSON.stringify(dataPost),
+        contentType: "application/json; charset=utf-8",
+        beforeSend: function() {
+          btnId.value = "Processing....";
+          btnId.disabled = true;
+        },
+        success: (res) => {
+          btnId.disabled = false;
+          return res;
+        },
+        error: (XMLHttpRequest, textStatus, errorThrown) => {
+          btnId.disabled = false;
+          return false;
+        },
+      })
+    );
+  }
+</script>
+</body>
+
+</html>

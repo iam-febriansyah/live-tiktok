@@ -1,0 +1,386 @@
+<%- include('../../partials/header.ejs') %>
+<%- include('../../partials/topbar.ejs') %>
+<%- include('../../partials/sidebar.ejs') %>
+<div class="main-content">
+  <div class="page-content">
+    <div class="container-fluid">
+      <%- include('../../partials/page-title.ejs') %>
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="card" id="leadsList">
+            <div class="card-header border-0">
+              <div class="row g-4 align-items-center">
+                <div class="col-sm-3">
+                  <div class="search-box">
+                    <input type="text" id="myCustomSearchBox" class="form-control search" placeholder="Search for...">
+                    <i class="ri-search-line search-icon"></i>
+                  </div>
+                </div>
+                <div class="col-sm-2">
+                  <input type="date" class="form-control" id="start" value="<%- sekarang %>">
+                </div>
+                <div class="col-sm-2">
+                  <input type="date" class="form-control" id="end" value="<%- sekarang %>">
+                </div>
+                <div class="col-sm-3">
+                  <select name="device_id" id="device_id" class="form-control select2" style="width: 100%"></select>
+                </div>
+                <div class="col-sm-2">
+                  <button class="btn w-100 btn-info" onclick="dataTableUtama()">Filter</button>
+                </div>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="col-md-12 row" id="divKirimAll" style="padding-top:2px; display:none">
+                <div class="col-md-12">
+                  <button class="btn btn-warning" id="tombolResend" onclick="resendMessage()">
+                    <i class="ri-mail-send-line"></i> RE-SEND</button>
+                  <button class="btn btn-danger" id="tombolDelete" onclick="deleteMessage()">
+                    <i class="ri-mail-send-line"></i> DELETE</button>
+                  <hr>
+                </div>
+              </div>
+              <div class="col-md-6" id="divSuccess" style="display:none">
+                <div class="row col-md-12">
+                  <span id="spanSuccess"></span>
+                </div>
+              </div>
+              <div class="col-md-6" id="divError" style="display:none">
+                <div class="row col-md-12">
+                  <span id="spanError"></span>
+                </div>
+              </div>
+              <div id="utama"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="modal"></div>
+  <div id="modalLoading"></div>
+  <%- include('../../partials/footer.ejs') %>
+</div>
+<%- include('../../partials/customizer.ejs') %>
+<%- include('../../partials/vendor-scripts.ejs') %>
+
+<script type='text/javascript' src='https://cdn.jsdelivr.net/npm/toastify-js'></script>
+<script type='text/javascript' src='../assets/libs/choices.js/public/assets/scripts/choices.min.js'></script>
+<script type='text/javascript' src='../assets/libs/flatpickr/flatpickr.min.js'></script>
+<script src="../assets/libs/sortablejs/Sortable.min.js"></script>
+<script src="../assets/js/pages/nestable.init.js"></script>
+<script src="../assets/js/app.js"></script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/js/iziToast.min.js" integrity="sha512-Zq9o+E00xhhR/7vJ49mxFNJ0KQw1E1TMWkPTxrWcnpfEFDEXgUiwJHIKit93EW/XxE31HSI5GEOW06G6BF1AtA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/js/iziToast.js" integrity="sha512-OmBbzhZ6lgh87tQFDVBHtwfi6MS9raGmNvUNTjDIBb/cgv707v9OuBVpsN6tVVTLOehRFns+o14Nd0/If0lE/A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap4.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+<!--GENERAL SCRIPT-->
+<script>
+  var versionUpdate = (new Date()).getTime();
+  var script = document.createElement("script");
+  script.type = "text/javascript";
+  script.src = "../assets/js/script.js";
+  document.body.appendChild(script);
+</script>
+
+<script>
+  var baseUrl = '<%- baseurl %>';
+  const sekarang = '<%-  sekarang %>';
+  $(document).ready(async function() {
+
+  });
+  window.addEventListener('load', async function() {
+    $('[data-toggle="tooltip"]').tooltip();
+    var devices = await getDevices();
+    select2General(devices, null, "device_id", null);
+    renderUtama();
+  })
+
+  async function getDevices() {
+    var url = `${baseUrl}/getDevices`;
+    var dataPost = {}
+    var btnId = "";
+    var datas = await ajaxPost(url, dataPost, btnId);
+    var dataTemp = []
+    datas.data.forEach(e => {
+      data = {
+        id: `${e.device_id}`,
+        text: `[${e.device_id}] ${e.description}`
+      }
+      dataTemp.push(data)
+    });
+    return dataTemp;
+  }
+
+  const renderAct = () => {
+    $('.modal').modal('hide');
+    renderUtama();
+  };
+
+  const renderUtama = () => {
+    document.querySelector('#utama').innerHTML = tableUtamaHTML;
+    dataTableUtama();
+  };
+
+  const tableUtamaHTML =
+    `<div class="table-responsive table-card">
+    	<table class="table align-middle" id="tableUtama" style="width: 100%; ">
+    		<thead class="table-light">
+    			<tr>
+					  <th style="width:15%"><input type='checkbox' style='transform: scale(2);' id='selectAll' name='selectAll' ></th>
+    				<th style="width:10%">Device ID</th>
+    				<th style="width:20%">Status</th>
+    				<th style="width:40%;">Message</th>
+    				<th style="width:20%">Created At</th>
+    			</tr>
+    		</thead>
+    	</table>
+    </div>`;
+
+  var dtable = "";
+  const dataTableUtama = () => {
+    var start = $("#start").val();
+    var end = $("#end").val();
+    var device_id = $("#device_id").val();
+    var buildSearchData = {
+      start: start,
+      end: end,
+      device_id: device_id
+    }
+    dtable = $('#tableUtama').DataTable({
+      searching: true,
+      lengthChange: false,
+      "dom": "lrtip",
+      "bDestroy": true,
+      ajax: {
+        type: "POST",
+        url: `${baseUrl}/getData`,
+        dataSrc: 'data',
+        data: buildSearchData
+      },
+      columns: [{
+          data: null,
+          orderable: false,
+          render: (data) => {
+            var html = ''
+            html += `<button class="btn btn-soft-info btn-sm"><input type='checkbox' style='transform: scale(2);margin-top:5px;' class='allChecked' onclick='onclickCheckbox()' value='${data.id}' id="cek_${data.id}" ></button>`;
+            if (data.device.status == 'true') {
+              html += `&nbsp;<button class="btn btn-soft-dark btn-sm border-dark" onclick="resend('${data.id}', 'cek_${data.id}')"><i class="ri-refresh-line"></i> RESEND</button>&nbsp;`;
+            }
+            if (data.status_message == 0 || data.status_message == 10) {
+              html += `<button class="btn btn-danger btn-sm" onclick="deletePesan('${data.id}', 'cek_${data.id}')"><i class="fa fa-trash"></i></button>`;
+            }
+            return html
+          }
+        },
+        {
+          data: null,
+          render: (data) => {
+            var d = data.device;
+            if (d.status == 'true') {
+              res = `<button class="btn btn-sm btn-success"><i class="bx bx-check"></i> ${d.device_id}</button>`;
+            } else {
+              res = `<a href='/devices/detail?device_id=${data.device_id}' class="btn btn-sm btn-danger"><i class="bx bx-x"></i> ${d.device_id}</a>`;
+            }
+            return res;
+          }
+        },
+        {
+          data: null,
+          render: (data) => {
+            var d = data.status_message;
+            if (d == 10) {
+              res = `<button class="btn btn-sm btn-soft-warning border-warning"><i class="bx bx-mail-send"></i> SENDING</button>`;
+              if (data.device.status != 'true') {
+                res = `<a href='/devices/detail?device_id=${data.device_id}' class="btn btn-sm btn-soft-danger border-danger"><i class="bx bx-mail-send"></i> DEVICE UNCONNECTED</a>`;
+              }
+            } else if (d == 0) {
+              res = `<button class="btn btn-sm btn-soft-info border-info"><i class="bx bxs-hourglass"></i> WAITING QUEUE</button>`;
+              if (data.device.status != 'true') {
+                res = `<a href='/devices/detail?device_id=${data.device_id}' class="btn btn-sm btn-soft-danger border-danger"><i class="bx bx-mail-send"></i> DEVICE UNCONNECTED</a>`;
+              }
+            } else if (d == 1 || d == 2 || d == 3 || d == 4) {
+              res = `<button class="btn btn-sm btn-soft-success border-success"><i class="bx bx-message-check"></i> SENT</button>`;
+              res += "<br>" + data.send_at;
+            } else if (d == 5) {
+              res = `<button class="btn btn-sm btn-soft-danger border-danger"><i class="bx bx-x-circle"></i> NUMBER NOT FOUND</button>`;
+            } else if (d == 6) {
+              res = `<button class="btn btn-sm btn-soft-danger border-danger"><i class="bx bx-help-circle"></i> SOMETHING WRONG!</button>`;
+            } else if (d == 7) {
+              if (data.remarks == null || data.remarks == "null") {
+                var remarks = "SOMETHING WRONG!!";
+              } else {
+                var remarks = data.remarks.toUpperCase()
+              }
+              res = `<button class="btn btn-sm btn-soft-danger border-danger"><i class="bx bxs-message-rounded-x"></i> ${remarks}</button>`;
+            } else {
+              res = `<button class="btn btn-sm btn-soft-danger border-danger"><i class="bx bx-help-circle"></i> SOMETHING WRONG!!!</button>`;
+            }
+            return res;
+          }
+        },
+        {
+          data: null,
+          render: (data) => {
+            var res = `<button class="btn btn-sm bg-info bg-gradient border-info"><i class="ri-smartphone-fill"></i> ${data.number}</button>`
+            res += `<div style = "width:500px; word-wrap: break-word">` + data.message + `</div>`;
+            if (data.file != '') {
+              res += `<a href="${data.file }" class="btn btn-sm btn-soft-info"><i class="bx bx-file-blank"></i> File</a>`;
+            }
+            return res;
+          }
+        },
+        {
+          "data": 'created_at'
+        },
+      ],
+
+      "columnDefs": [{
+        "className": 'text-center',
+        "targets": [0, 1, 2, 4]
+      }],
+    });
+    $('#myCustomSearchBox').keyup(function() {
+      dtable.search($(this).val()).draw();
+    })
+    var allPages = dtable.cells().nodes();
+    $('#selectAll').click(function() {
+      if ($('input[name="selectAll"]').is(':checked')) {
+        dtable.$("input[type='checkbox']").attr('checked', $(this.checked));
+      } else {
+        dtable.$('input:checkbox').removeAttr('checked');
+      }
+      onclickCheckbox();
+    })
+  };
+
+  function onclickCheckbox() {
+    var checkeds = [];
+    $("input:checked", dtable.cells().nodes()).each(function() {
+      checkeds.push($(this).val());
+    });
+    var divKirimAll = document.getElementById('divKirimAll');
+    var tombolResend = document.getElementById('tombolResend');
+    var tombolDelete = document.getElementById('tombolDelete');
+    if (checkeds.length > 0) {
+      divKirimAll.style.display = 'block';
+      tombolResend.innerHTML = '<i class="ri-mail-send-line"></i> RE-SEND  (' + checkeds.length + ')';
+      tombolDelete.innerHTML = '<i class="ri-mail-send-line"></i> DELETE (' + checkeds.length + ')';
+    } else {
+      checkeds = [];
+      divKirimAll.style.display = 'none';
+    }
+  }
+
+  async function resend(id, cek_id) {
+    dtable.$('input:checkbox').removeAttr('checked');
+    dtable.$(`#${cek_id}`).attr('checked', 'checked');
+    await resendMessage();
+  }
+
+  async function deletePesan(id, cek_id) {
+    dtable.$('input:checkbox').removeAttr('checked');
+    dtable.$(`#${cek_id}`).attr('checked', 'checked');
+    await deleteMessage();
+  }
+
+  async function resendMessage() {
+    await showLoading("Please wait...");
+    textError = "";
+    textSuccess = "";
+    var checkeds = [];
+    var btn = document.getElementById('tombolResend');
+    var btnDelete = document.getElementById('tombolDelete');
+    var divError = document.getElementById('divError');
+    var divSuccess = document.getElementById('divSuccess');
+    divError.style.display = 'none';
+    divSuccess.style.display = 'none';
+
+    btn.disabled = true;
+    btnDelete.disabled = true;
+    btn.innerHTML = '<i class="fa fa-spinner" aria-hidden="true"></i> Mohon tunggu, sedang proses data ...';
+    $("input:checked", dtable.cells().nodes()).each(function() {
+      checkeds.push($(this).val());
+    });
+
+    var dataPost = {
+      id: checkeds
+    }
+    var url = `${baseUrl}/reSend`;
+    var res = await ajaxPostWIthList(url, dataPost, "");
+    if (res.status) {
+      showSnackSuccess(res.remarks);
+      dataTableUtama();
+      dtable.$('input:checkbox').removeAttr('checked');
+      onclickCheckbox();
+    } else {
+      showSnackError(res.remarks);
+    }
+    btn.disabled = false;
+    btnDelete.disabled = false;
+    await dismisLoading();
+  }
+
+  async function deleteMessage() {
+    await showLoading("Please wait...");
+
+    var checkeds = [];
+    var btn = document.getElementById('tombolResend');
+    var btnDelete = document.getElementById('tombolDelete');
+    btn.disabled = true;
+    btnDelete.disabled = true;
+
+    $("input:checked", dtable.cells().nodes()).each(function() {
+      checkeds.push($(this).val());
+    });
+
+    var dataPost = {
+      id: checkeds
+    }
+    var url = `${baseUrl}/deleteMessage`;
+    var res = await ajaxPostWIthList(url, dataPost, "");
+    if (res.status) {
+      showSnackSuccess(res.remarks);
+      dataTableUtama();
+      dtable.$('input:checkbox').removeAttr('checked');
+      onclickCheckbox();
+    } else {
+      showSnackError(res.remarks);
+    }
+    btn.disabled = false;
+    btnDelete.disabled = false;
+    await dismisLoading();
+  }
+
+  async function ajaxPostWIthList(url, dataPost, btnId) {
+    return await Promise.resolve(
+      $.ajax({
+        url: url,
+        type: "post",
+        dataType: "json",
+        data: JSON.stringify(dataPost),
+        contentType: "application/json; charset=utf-8",
+        beforeSend: function() {
+          btnId.value = "Processing....";
+          btnId.disabled = true;
+        },
+        success: (res) => {
+          btnId.disabled = false;
+          return res;
+        },
+        error: (XMLHttpRequest, textStatus, errorThrown) => {
+          btnId.disabled = false;
+          return false;
+        },
+      })
+    );
+  }
+</script>
+</body>
+
+</html>
