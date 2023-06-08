@@ -1,0 +1,97 @@
+<!-- ========== App Menu ========== -->
+<div class="app-menu navbar-menu">
+  <!-- LOGO -->
+  <div class="navbar-brand-box">
+    <!-- Dark Logo-->
+    <a href="../../../dashboard" class="logo logo-dark">
+      <span class="logo-sm">
+        <img src="/velzon/assets/images/logo-sm.png" alt="" height="22">
+      </span>
+      <span class="logo-lg">
+        <img src="/velzon/assets/images/logo-dark.png" alt="" height="17">
+      </span>
+    </a>
+    <!-- Light Logo-->
+    <a href="../../../dashboard" class="logo logo-light">
+      <span class="logo-sm">
+        <img src="/velzon/assets/images/logo-sm.png" alt="" height="22">
+      </span>
+      <span class="logo-lg">
+        <img src="/velzon/assets/images/logo-light.png" alt="" height="17">
+      </span>
+    </a>
+    <button type="button" class="btn btn-sm p-0 fs-20 header-item float-end btn-vertical-sm-hover" id="vertical-hover">
+      <i class="ri-record-circle-line"></i>
+    </button>
+  </div>
+
+  <div id="scrollbar">
+    <div class="container-fluid">
+
+      <div id="two-column-menu">
+      </div>
+      <ul class="navbar-nav" id="navbar-nav">
+        <li class="menu-title"><span data-key="t-menu">Menu</span></li>
+        <li class="nav-item">
+          <a class="nav-link menu-link" href="/dashboard">
+            <i class="bx bxs-dashboard"></i> Dashboard
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link menu-link" href="/devices">
+            <i class="bx bx-devices"></i> Devices
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link menu-link" href="/messages">
+            <i class="bx bx-message"></i> Messages
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link menu-link" href="#sidebarLanding" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarLanding">
+            <i class="ri-mail-send-fill"></i> <span data-key="t-landing">Send Messages</span>
+          </a>
+          <div class="collapse menu-dropdown" id="sidebarLanding">
+            <ul class="nav nav-sm flex-column">
+              <li class="nav-item">
+                <a href="/send" class="nav-link" data-key="t-one-page"> Queue Message </a>
+              </li>
+              <li class="nav-item">
+                <a href="/send/direct" class="nav-link" data-key="t-one-page"> Direct Message </a>
+              </li>
+              <li class="nav-item">
+                <a href="/send/bulk" class="nav-link" data-key="t-nft-landing"> Bulk Message</a>
+              </li>
+            </ul>
+          </div>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link menu-link" href="/swagger">
+            <i class="mdi mdi-api"></i> API
+          </a>
+        </li>
+      </ul>
+    </div>
+    <!-- Sidebar -->
+  </div>
+</div>
+<button onclick="topFunction()" class="btn btn-danger btn-icon" id="back-to-top">
+  <i class="ri-arrow-up-line"></i>
+</button>
+
+<div class="customizer-setting d-none d-md-block" onclick="gototiketing()">
+  <div class="btn-info btn-rounded shadow-lg btn btn-icon btn-lg p-2">
+    <i class='mdi mdi-deskphone fs-22'></i>
+  </div>
+</div>
+
+<!-- Left Sidebar End -->
+<!-- Vertical Overlay-->
+<div class="vertical-overlay"></div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script>
+  function gototiketing() {
+    window.open('https://ticketing.galeritekno.com/', '_blank');
+  }
+</script>

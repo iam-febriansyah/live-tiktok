@@ -1,0 +1,244 @@
+<%- include('../../partials/header.ejs') %>
+<%- include('../../partials/topbar.ejs') %>
+<%- include('../../partials/sidebar.ejs') %>
+<style>
+  .vTop {
+    vertical-align: top;
+  }
+</style>
+
+<div class="main-content">
+  <div class="page-content">
+    <div class="container-fluid">
+      <%- include('../../partials/page-title.ejs') %>
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="card" id="leadsList">
+            <div class="card-header border-0">
+
+            </div>
+            <div class="card-body">
+              <div>
+                <div class="row g-3">
+                  <div class="col-md-3 borderDiv">
+                    <div class="mb-1">
+                      <label for="device_id" class="form-label">Device ID <span style="color:red">*</span></label>
+                      <select id="device_id" class="form-control select2" style="width: 100%"></select>
+                    </div>
+                  </div>
+                  <div class="col-md-4 borderDiv">
+                    <div class="mb-1">
+                      <label for="tujuan" class="form-label">Receiver Number <span style="color:red">*</span></label>
+                      <div class="input-group mb-3">
+                        <select id="phone_code" class="form-control select2" style="width: 20%;"></select>
+                        <input type="text" class="form-control" placeholder="8128182" id="number">
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-md-12 borderDiv">
+                    <div class="mb-1">
+                      <label for="notes" class="form-label">Link Image/PDF FIle</label> <button class="btn btn-sm btn-soft-danger">Optional</button>
+                      <input type="text" class="form-control" placeholder="https://yourlink/image.png  (Only .jpg, .png, .jpeg, .pdf)" id="file">
+                    </div>
+                  </div>
+
+                  <div class="col-md-12 borderDiv">
+                    <div class="mb-1">
+                      <label for="notes" class="form-label">Message <span style="color:red">*</span></label>
+                      <textarea id="message" class="form-control" /></textarea>
+                    </div>
+                  </div>
+
+                  <div class="col-md-12">
+                    <div class=" mb-1">
+                      <button class="btn btn-success" id="submit" onclick="submit()">Submit</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="modalLoading"></div>
+  <%- include('../../partials/footer.ejs') %>
+</div>
+<%- include('../../partials/customizer.ejs') %>
+<%- include('../../partials/vendor-scripts.ejs') %>
+
+
+<script type='text/javascript' src='https://cdn.jsdelivr.net/npm/toastify-js'></script>
+<script type='text/javascript' src='/assets/libs/choices.js/public/assets/scripts/choices.min.js'></script>
+<script src="/assets/libs/sortablejs/Sortable.min.js"></script>
+<script src="/assets/js/pages/nestable.init.js"></script>
+<script src="/assets/js/app.js"></script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/js/iziToast.min.js" integrity="sha512-Zq9o+E00xhhR/7vJ49mxFNJ0KQw1E1TMWkPTxrWcnpfEFDEXgUiwJHIKit93EW/XxE31HSI5GEOW06G6BF1AtA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/js/iziToast.js" integrity="sha512-OmBbzhZ6lgh87tQFDVBHtwfi6MS9raGmNvUNTjDIBb/cgv707v9OuBVpsN6tVVTLOehRFns+o14Nd0/If0lE/A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap4.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+<script src="/assets/js/pages/tinymce.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/autonumeric/4.1.0/autoNumeric.min.js"></script>
+
+<!-- GENERAL SCRIPT -->
+<script>
+  var versionUpdate = (new Date()).getTime();
+  var script = document.createElement("script");
+  script.type = "text/javascript";
+  script.src = "/assets/js/script.js";
+  document.body.appendChild(script);
+</script>
+
+<script>
+  var rowCount = 0;
+  var baseUrl = '<%- baseurl %>';
+  const sekarang = '<%-  sekarang %>';
+  var listPhoneCode = [];
+  var listDevices = [];
+
+  window.addEventListener('load', async function() {
+    await showLoading("Please wait...");
+    await getDevices();
+    await getPhoneCode();
+    await select2General(listDevices, null, "device_id", null);
+    await select2General(listPhoneCode, null, "phone_code", null);
+    await dismisLoading();
+  });
+
+  async function getDevices() {
+    var url = `${baseUrl}/getDevices`;
+    var dataPost = {}
+    var btnId = "";
+    var datas = await ajaxPost(url, dataPost, btnId);
+    datas.data.forEach(e => {
+      if (e.status == 'true') {
+        var data = {
+          id: e.device_id,
+          text: e.device_id + ' - ' + e.description,
+          selected: ''
+        }
+        listDevices.push(data);
+      }
+    });
+  }
+
+  async function getPhoneCode() {
+    var url = `${baseUrl}/phoneCode`;
+    var dataPost = {}
+    var btnId = "";
+    var datas = await ajaxPost(url, dataPost, btnId);
+    datas.data.forEach(e => {
+      var data = {
+        id: e.dial_code,
+        text: e.dial_code + " [" + e.code + "]",
+        selected: ''
+      }
+      listPhoneCode.push(data);
+    });
+  }
+
+
+  async function ajaxPostWIthList(url, dataPost, btnId) {
+    return await Promise.resolve(
+      $.ajax({
+        url: url,
+        type: "post",
+        dataType: "json",
+        data: JSON.stringify(dataPost),
+        contentType: "application/json; charset=utf-8",
+        beforeSend: function() {
+          btnId.value = "Processing....";
+          btnId.disabled = true;
+        },
+        success: (res) => {
+          btnId.disabled = false;
+          return res;
+        },
+        error: (XMLHttpRequest, textStatus, errorThrown) => {
+          btnId.disabled = false;
+          return false;
+        },
+      })
+    );
+  }
+
+  async function submit() {
+    var status = true;
+    var device_id = $("#device_id").val();
+    var phone_code = $("#phone_code").val();
+    var number = $("#number").val();
+    var file = $("#file").val();
+    var message = $("#message").val();
+    var type = 'text';
+
+    if (device_id == '') {
+      status = false;
+      showSnackError("Please choose Device ID");
+      return false
+    }
+    if (phone_code == '') {
+      status = false;
+      showSnackError("Please choose Phone Code");
+      return false
+    }
+    if (number == '' || number.length < 6) {
+      status = false;
+      showSnackError("Please enter phone number, minimal 6 characters");
+      return false
+    }
+    if (message == '' || message.length < 4) {
+      status = false;
+      showSnackError("Please enter message, minimal 4 characters");
+      return false
+    }
+
+    if (file != '') {
+      var splitFile = file.split(".");
+      var ext = splitFile[splitFile.length - 1];
+      if (ext == 'jpg' || ext == 'png' || ext == 'jpeg') {
+        type = 'image';
+      } else if (ext == 'pdf') {
+        type = 'document';
+      } else {
+        status = false;
+        showSnackError("Only .jpg .png .jpeg .pdf extentions");
+        return false
+      }
+    }
+
+    var dataPost = {
+      device_id: device_id,
+      number: phone_code + "" + number,
+      message: message,
+      file: file,
+      type: type
+    }
+
+    if (status) {
+      var url = `${baseUrl}/sendDirect`
+      var btnId = "submit";
+      await showLoading("Please wait...");
+      var res = await ajaxPostWIthList(url, dataPost, btnId);
+      await dismisLoading();
+      if (!res) {
+        showSnackError("Something wrong system");
+      } else {
+        if (res.status) {
+          success(res.remarks)
+        } else {
+          showSnackError(res.remarks);
+        }
+      }
+    }
+  };
+</script>
+</body>
+
+</html>

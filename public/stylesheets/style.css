@@ -1,0 +1,66 @@
+.select2-container .select2-selection--single {
+  box-sizing: border-box;
+  cursor: pointer;
+  display: block;
+  height:  38px;
+  padding-top:5px;
+  user-select: none;
+
+  -webkit-user-select: none;
+}
+@page {
+  size: auto;
+  margin: 0;
+}
+
+.dataTables_wrapper .dataTables_paginate {
+  float: right;
+  margin-right: 2%;
+
+}
+
+.dataTables_wrapper .dataTables_info {
+float: left;
+margin-left: 2%;
+margin-top: 1%;
+
+
+}
+
+.parent_round_image {
+  width: 100%; /* I took the width from your post and placed it in css */
+  height: 100%;
+}
+
+#mymap {
+  height: 450px;
+  width: auto;
+}
+
+.body {
+  margin: 40mm 40mm 40mm 40mm;
+
+}
+
+.textarea-part {
+  position: relative;
+}
+
+.btn-apply {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+}
+
+div.scroll {
+  margin: 4px, 4px;
+  padding: 4px;
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
+}
+
+hr.new2 {
+  border-top: 1px dashed whitesmoke;
+}
