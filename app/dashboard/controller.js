@@ -18,7 +18,7 @@ module.exports = {
         baseurl: url(req),
         baseurlDomain: help.baseurl(req),
       };
-      res.render("layout/dashboard/view", data);
+      res.render("layout/dashboard/index", data);
     } catch (err) {
       res.render("error", { error: err });
     }

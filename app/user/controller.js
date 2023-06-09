@@ -18,7 +18,7 @@ module.exports = {
         baseurl: url(req),
         baseurlDomain: help.baseurl(req),
       };
-      res.render("layout/gift/user", data);
+      res.render("layout/user/index", data);
     } catch (err) {
       res.render("error", { error: err });
     }
