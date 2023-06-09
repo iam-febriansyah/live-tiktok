@@ -14,6 +14,7 @@ module.exports = {
         title: "User",
         page_title: "User",
         folder: "User",
+        versionUpdate : help.nowNoSpace(),
         baseurl: url(req),
         baseurlDomain: help.baseurl(req),
       };

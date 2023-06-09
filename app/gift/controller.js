@@ -35,6 +35,7 @@ module.exports = {
         title: "Gift",
         page_title: "Gift",
         folder: "Gift",
+        versionUpdate : help.nowNoSpace(),
         baseurl: url(req),
         baseurlDomain: help.baseurl(req),
       };

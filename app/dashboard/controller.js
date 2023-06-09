@@ -14,6 +14,7 @@ module.exports = {
         title: "Dashboard",
         page_title: "Dashboard",
         folder: "Dashboard",
+        versionUpdate : help.nowNoSpace(),
         baseurl: url(req),
         baseurlDomain: help.baseurl(req),
       };

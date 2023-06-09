@@ -14,6 +14,7 @@ module.exports = {
           if (err) {
             res.render("layout/auth/index", {
               title: "Sign",
+              versionUpdate : help.nowNoSpace(),
               baseurl: help.baseurl(req),
             });
           } else {
@@ -21,12 +22,13 @@ module.exports = {
               req.session.user = {
                 auth_user_id: token_data.user.auth_user_id,
                 name: token_data.user.name,
-                email: token_data.user.email,
+                email: token_data.user.email
               };
               res.redirect("/dashboard");
             } else {
               res.render("layout/auth/index", {
                 title: "Sign",
+                versionUpdate : help.nowNoSpace(),
                 baseurl: help.baseurl(req),
               });
             }
