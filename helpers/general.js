@@ -582,8 +582,6 @@ function randonNumAlpha(length) {
 
 function forceLogout(res, req) {
   console.log("forceLogout");
-  req.flash("alertMessage", `Session anda telah habis, harap login kembali`);
-  req.flash("alertStatus", "danger");
   res.cookie("auth", "null");
   req.session.destroy();
   res.redirect("/");
