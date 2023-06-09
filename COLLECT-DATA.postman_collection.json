@@ -6,13 +6,13 @@
 	},
 	"item": [
 		{
-			"name": "ADD",
+			"name": "VALIDASI LICENSE",
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"username\" : \"upfollowers.gacor\"\r\n}",
+					"raw": "{\r\n    \"license\" : \"your-licencse\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -20,28 +20,29 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:2039/api/add",
-					"protocol": "http",
+					"raw": "https://live-tiktok.febriansyah.dev/api/access",
+					"protocol": "https",
 					"host": [
-						"localhost"
+						"live-tiktok",
+						"febriansyah",
+						"dev"
 					],
-					"port": "2039",
 					"path": [
 						"api",
-						"add"
+						"access"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "NON ACTIVE",
+			"name": "SET USER LIVE",
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"username\" : \"upfollowers.gacor\"\r\n}",
+					"raw": "{\r\n    \"license\" : \"your-licencse\",\r\n    \"username\" : \"upfollowers.gacor\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -49,102 +50,16 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:2039/api/non-active",
-					"protocol": "http",
+					"raw": "https://live-tiktok.febriansyah.dev/api/set-username",
+					"protocol": "https",
 					"host": [
-						"localhost"
+						"live-tiktok",
+						"febriansyah",
+						"dev"
 					],
-					"port": "2039",
 					"path": [
 						"api",
-						"non-active"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "ACTIVE",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"username\" : \"upfollowers.gacor\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:2039/api/active",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "2039",
-					"path": [
-						"api",
-						"active"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "CHATS",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"limit\" : 100,\r\n    \"username\" : \"upfollowers.gacor\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:2039/api/chats",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "2039",
-					"path": [
-						"api",
-						"chats"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "GIFTS",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"limit\" : 100,\r\n    \"username\" : \"upfollowers.gacor\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:2039/api/gifts",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "2039",
-					"path": [
-						"api",
-						"gifts"
+						"set-username"
 					]
 				}
 			},
