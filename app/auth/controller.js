@@ -9,7 +9,7 @@ module.exports = {
   viewSign: async (req, res) => {
     try {
       if (req.session.user === null || req.session.user === undefined) {
-        var token = req.cookies.auth;
+        var token = req.cookies?.auth;
         jwt.verify(token, process.env.JWT_KEY, function (err, token_data) {
           if (err) {
             res.render("layout/auth/index", {
