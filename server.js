@@ -74,7 +74,7 @@ var dashboardRoute = require("./app/dashboard/router");
 var userRoute = require("./app/user/router");
 var giftRoute = require("./app/gift/router");
 var apiRoute = require("./app/api/router.js");
-// require("./db/index.js")(app);
+require("./db/index.js")(app);
 app.use("/", authRoute);
 app.use("/dashboard", dashboardRoute);
 app.use("/user", userRoute);
