@@ -131,70 +131,45 @@
     async function submit(type = ''){
         var btnId = document.getElementById('btnSave');
 
-        var role_access = $("#role_access").val()
         var auth_user_id = $("#auth_user_id").val();
         var email = $("#email").val();
-        var nrp = $("#nrp").val();
-        var fullname = $("#fullname").val();
-        var password = $("#password").val();
-        var re_password = $("#re_password").val();
-        
-        if(type == '' && auth_user_id == ''){
-            type = 'add';
-        }else if(type == '' && auth_user_id != ''){
-            type = 'edit';
-        }
+        var domain = $("#domain").val();
+        var expire_date = $("#expire_date").val();
+        var license = $("#license").val();
 
-        if(type != 'delete' && email == ''){
+        if(email == ''){
             showSnackError('Mohon isi Email');
             return false;
         }
 
-        if(type != 'delete' && nrp == ''){
-            showSnackError('Mohon isi NRP');
+        if(license == ''){
+            showSnackError('Mohon isi License');
             return false;
         }
 
-        if(type != 'delete' && fullname == ''){
-            showSnackError('Mohon isi Nama Lengkap');
+        if(domain == ''){
+            showSnackError('Mohon isi Domain/Host');
             return false;
         }
 
-        if(type == 'add' || ($("#change_password").prop('checked') == true && type == 'edit') ){
-            if(password == ''){
-                showSnackError('Mohon isi Password');
-                return false;
-            }
-            if(password != re_password){
-                showSnackError('Password tidak cocok, harap ulangi password');
-                return false;
-            }
+        if(expire_date == ''){
+            showSnackError('Mohon isi Masa Aktif');
+            return false;
         }
 
         await showLoading("Mohon tunggu..");
         var dataPost = {
-            type: type,
             auth_user_id: auth_user_id,
             email: email,
-            nrp: nrp,
-            email: email,
-            fullname: fullname,
-            password: password,
-            re_password: re_password,
-            change_password: $("#change_password").prop('checked') == true ? 1 : 0,
-            role_access: role_access
+            domain: domain,
+            expire_date: expire_date,
+            license: license
         }
-        var url = `${baseUrl}/add-edit-delete`;
+        var url = `${baseUrl}/put`;
         var res = await ajaxPostWIthList(url, dataPost, btnId);
         if (res.status) {
             showSnackSuccess(res.remarks);
-            $("#auth_user_id").val('')
-            $("#email").val('')
-            $("#nrp").val('')
-            $("#fullname").val('')
-            $("#pasword").val('')
-            $("#re_pasword").val('')
-            $("#role_access").val('')
+            clear()
             $('#modalAddEdit').modal('hide');
             dataTableUtama();
         } else {
