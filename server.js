@@ -7,7 +7,7 @@ var bodyParser = require("body-parser");
 var server = require("http").createServer(app);
 const methodOverride = require("method-override");
 const path = require("path");
-var cookieParser = require("cookie-parser");
+const session = require("express-session");
 
 var io = require("socket.io")(server, {
   cors: {
@@ -50,7 +50,6 @@ app.use(function (req, res, next) {
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 app.use("/velzon", express.static(path.join(__dirname, "/public/")));
 app.use("/app", express.static(path.join(__dirname, "/app/")));
@@ -75,7 +74,7 @@ var dashboardRoute = require("./app/dashboard/router");
 var userRoute = require("./app/user/router");
 var giftRoute = require("./app/gift/router");
 var apiRoute = require("./app/api/router.js");
-require("./db/index.js")(app);
+// require("./db/index.js")(app);
 app.use("/", authRoute);
 app.use("/dashboard", dashboardRoute);
 app.use("/user", userRoute);
