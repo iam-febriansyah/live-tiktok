@@ -16,6 +16,7 @@ module.exports = {
               title: "Sign",
               versionUpdate : help.nowNoSpace(),
               baseurl: help.baseurl(req),
+              baseurlDomain: help.baseurl(req),
             });
           } else {
             if (token_data.user.version == 1) {
@@ -30,6 +31,7 @@ module.exports = {
                 title: "Sign",
                 versionUpdate : help.nowNoSpace(),
                 baseurl: help.baseurl(req),
+                baseurlDomain: help.baseurl(req),
               });
             }
           }
