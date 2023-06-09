@@ -29,6 +29,8 @@ async function getGift(start, end){
 
 module.exports = {
   index: async (req, res) => {
+    var createdBy = req.session.user?.user_id;
+    if(!createdBy){ help.forceLogout(res, req); }
     try {
       var data = {
         session: req.session,
