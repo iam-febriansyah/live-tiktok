@@ -8,7 +8,7 @@ const url = (req) => { return help.baseurl(req) + "/user"; };
 
 module.exports = {
   index: async (req, res) => {
-    var createdBy = req.session.user?.user_id;
+    var createdBy = req.session.user?.auth_user_id;
     if(!createdBy){ help.forceLogout(res, req); }
     try {
       var data = {
@@ -50,7 +50,7 @@ module.exports = {
 
   addEdit: async (req, res) => {
     try {
-      var createdBy = req.session.user.user_id;
+      var createdBy = req.session.user.auth_user_id;
       var { user_id, domain, email, license, expire_date } = req.body;
 
       var dataInsert = {
@@ -106,7 +106,7 @@ module.exports = {
 
   del: async (req, res) => {
     try {
-      var createdBy = req.session.user.user_id;
+      var createdBy = req.session.user.auth_user_id;
       var { user_id } = req.body;
       var edit = await dbMysql.user.findOne({ where : { user_id : user_id, is_deleted : { [Op.eq]: null } } });
       if(edit){
