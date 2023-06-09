@@ -1,8 +1,8 @@
-$.ajaxSetup({
-  headers: {
-      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-  }
-})
+// $.ajaxSetup({
+//   headers: {
+//       'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+//   }
+// })
 
 const modal = ({ idModal, judul, body, idBtn, ukuran = "" }) => {
   return `<div class="modal fade" id="${idModal}" role="dialog">
@@ -86,10 +86,10 @@ const ajax = (url, data, aksi = "", param = "") => {
 
 async function ajaxPost(url, dataPost, btnId) {
   try {
-    dataPost['_token'] = $('meta[name="csrf-token"]').attr('content');
-    var header = { 
-      "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]').getAttribute("content")
-    }
+    // dataPost['_token'] = $('meta[name="csrf-token"]').attr('content');
+    // var header = { 
+    //   "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]').getAttribute("content")
+    // }
     return await Promise.resolve(
       $.ajax({
         url: url,
@@ -152,10 +152,10 @@ async function ajaxPost(url, dataPost, btnId) {
 
 async function ajaxPostWIthList(url, dataPost, btnId) {
   try {
-    dataPost['_token'] = $('meta[name="csrf-token"]').attr('content');
-    var header = { 
-      "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]').getAttribute("content")
-    }
+    // dataPost['_token'] = $('meta[name="csrf-token"]').attr('content');
+    // var header = { 
+    //   "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]').getAttribute("content")
+    // }
     return await Promise.resolve(
       $.ajax({
           url: url,
