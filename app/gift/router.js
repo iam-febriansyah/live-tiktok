@@ -14,7 +14,7 @@ router.use(async function (req, res, next) {
 });
 
 router.get("/", index);
-router.get("/get-data", getData);
-router.get("/get-details", getDetails);
+router.post("/get-data", getData);
+router.post("/get-details", getDetails);
 
 module.exports = router;

@@ -14,9 +14,9 @@ router.use(async function (req, res, next) {
 });
 
 router.get("/", index);
-router.get("/put", addEdit);
-router.get("/del", del);
-router.get("/get-data", getData);
-router.get("/get-single", getSingle);
+router.post("/put", addEdit);
+router.post("/del", del);
+router.post("/get-data", getData);
+router.post("/get-single", getSingle);
 
 module.exports = router;
