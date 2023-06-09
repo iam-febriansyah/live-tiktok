@@ -74,26 +74,19 @@ app.get("/socket/:id", function (req, res) {
 const swaggerUi = require("swagger-ui-express");
 const swaggerDocument = require("./swagger.json");
 
+var authRoute = require("./app/auth/router");
+var dashboardRoute = require("./app/dashboard/router");
+var userRoute = require("./app/user/router");
+var giftRoute = require("./app/gift/router");
 var apiRoute = require("./app/api/router.js");
-require("./db/index.js")(app);
+// require("./db/index.js")(app);
+app.use("/", authRoute);
+app.use("/dashboard", dashboardRoute);
+app.use("/user", userRoute);
+app.use("/gift", giftRoute);
 app.use("/api", apiRoute);
-app.use("/", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use("/api-doc", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-var cronStatus = {};
-var cronStorage = {};
-async function cronFunction(time, timeTxt) {
-  var variableName = timeTxt;
-  cronStatus[variableName] = true;
-  var task = cron.schedule(time, async () => {
-    var dateNow = help.dateTimeNow();
-    if (timeTxt == "1am") {
-      db.destroyDb();
-    }
-    cronStorage[`${timeTxt}${dateNow}`] = task;
-  });
-}
-
-cronFunction("0 1 * * *", "1am"); /*every at 1am*/
 
 function html(account) {
   var http = process.env.HTTP;

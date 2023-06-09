@@ -79,7 +79,7 @@ module.exports = {
       });
     }
   },
-
+  
   actionLogout: (req, res) => {
     res.cookie("auth", "null");
     req.session.destroy();
