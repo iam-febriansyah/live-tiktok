@@ -100,6 +100,7 @@ module.exports = {
       await help.upsert(dbMysql.user, dataInsert, { user_id : user_id });
       res.send({ status: true, remarks: "Successfully" });
     } catch (err) {
+      console.log(err)
       res.send({status: false, remarks: err});
     }
   },
