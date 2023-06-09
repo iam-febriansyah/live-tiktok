@@ -14,9 +14,9 @@ async function dbAccess(db) {
 
 module.exports = async function (app) {
   try {
-    const db = require("./config");
-    console.log(db.name);
-    await dbAccess(db);
+    const dbMysql = require("./mysql");
+    console.log(dbMysql.name);
+    await dbAccess(dbMysql);
   } catch (error) {
     console.error("Unable to connect to the database:", error);
   }
