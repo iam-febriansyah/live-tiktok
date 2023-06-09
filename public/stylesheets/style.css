@@ -64,3 +64,6 @@ div.scroll {
 hr.new2 {
   border-top: 1px dashed whitesmoke;
 }
+.text-right{
+  text-align: right;
+}

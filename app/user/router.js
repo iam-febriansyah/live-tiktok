@@ -1,6 +1,6 @@
 var express = require("express");
 var router = express.Router();
-const { index } = require("./controller");
+const { index, addEdit, del, getData, getSingle } = require("./controller");
 
 const { jwtToSession } = require("../middleware");
 router.use(jwtToSession);
@@ -14,5 +14,9 @@ router.use(async function (req, res, next) {
 });
 
 router.get("/", index);
+router.get("/put", addEdit);
+router.get("/del", del);
+router.get("/get-data", getData);
+router.get("/get-single", getSingle);
 
 module.exports = router;

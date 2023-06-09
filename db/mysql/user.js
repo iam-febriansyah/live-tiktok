@@ -31,6 +31,11 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.DATE,
         allowNull: false,
       },
+      on_live: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        defaultValue: 0
+      },
 
       created_at: {
         type: "TIMESTAMP",
@@ -60,14 +65,14 @@ module.exports = (sequelize, Sequelize) => {
       indexes: [
         {
           unique: true,
-          fields: ["email"],
-        },
-        {
-          unique: true,
           fields: ["user_id"],
         },
         {
-          unique: true,
+          unique: false,
+          fields: ["email"],
+        },
+        {
+          unique: false,
           fields: ["license"],
         },
       ],

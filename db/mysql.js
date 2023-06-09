@@ -37,6 +37,6 @@ dbMysql.name = process.env.NAME_MYSQL;
 dbMysql.auth_user = require("./mysql/auth_user")(sequelize, Sequelize, DataTypes);
 dbMysql.gift = require("./mysql/gift")(sequelize, Sequelize, DataTypes);
 dbMysql.room = require("./mysql/room")(sequelize, Sequelize, DataTypes);
-dbMysql.auth_useruser = require("./mysql/user")(sequelize, Sequelize, DataTypes);
+dbMysql.user = require("./mysql/user")(sequelize, Sequelize, DataTypes);
 
 module.exports = dbMysql;

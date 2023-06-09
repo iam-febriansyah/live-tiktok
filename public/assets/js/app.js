@@ -305,17 +305,17 @@
     "vertical" == e
       ? ((document.getElementById("two-column-menu").innerHTML = ""),
         (document.querySelector(".navbar-menu").innerHTML = m),
-        document.getElementById("theme-settings-offcanvas") && ((document.getElementById("sidebar-size").style.display = "block"), (document.getElementById("sidebar-view").style.display = "block"), (document.getElementById("sidebar-color").style.display = "block"), (document.getElementById("layout-position").style.display = "block"), (document.getElementById("layout-width").style.display = "block")),
+        document.getElementById("theme-settings-offcanvas") && (  (document.getElementById("sidebar-color").style.display = "block"), (document.getElementById("layout-position").style.display = "block")),
         v(),
         A(),
         x(),
         T())
       : "horizontal" == e
-      ? (B(), document.getElementById("theme-settings-offcanvas") && ((document.getElementById("sidebar-size").style.display = "none"), (document.getElementById("sidebar-view").style.display = "none"), (document.getElementById("sidebar-color").style.display = "none"), (document.getElementById("layout-position").style.display = "block"), (document.getElementById("layout-width").style.display = "block")), A())
+      ? (B(), document.getElementById("theme-settings-offcanvas") && ( (document.getElementById("sidebar-color").style.display = "none"), (document.getElementById("layout-position").style.display = "block") ), A())
       : "twocolumn" == e &&
         (document.getElementById("scrollbar").removeAttribute("data-simplebar"),
         document.getElementById("scrollbar").classList.remove("h-100"),
-        document.getElementById("theme-settings-offcanvas") && ((document.getElementById("sidebar-size").style.display = "none"), (document.getElementById("sidebar-view").style.display = "none"), (document.getElementById("sidebar-color").style.display = "block"), (document.getElementById("layout-position").style.display = "none"), (document.getElementById("layout-width").style.display = "none")));
+        document.getElementById("theme-settings-offcanvas") && ( (document.getElementById("sidebar-color").style.display = "block"), (document.getElementById("layout-position").style.display = "none")));
   }
   function x() {
     document.getElementById("vertical-hover").addEventListener("click", function () {
@@ -487,7 +487,7 @@
       }),
       sessionStorage.setItem("defaultAttribute", JSON.stringify(a)),
       q(a),
-      (i = document.querySelector('.btn[data-bs-target="#theme-settings-offcanvas"]')) && i.click()),
+      (i = document.querySelector('.btn[data-bs-target="#theme-settings-offcanvas"]')) ),
     f(),
     (t = document.getElementById("search-close-options")),
     (o = document.getElementById("search-dropdown")),

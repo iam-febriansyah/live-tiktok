@@ -5,19 +5,19 @@
     <!-- Dark Logo-->
     <a href="../../../dashboard" class="logo logo-dark">
       <span class="logo-sm">
-        <img src="/velzon/assets/images/logo-sm.png" alt="" height="22">
+        <img src="/velzon/icons/logo.png" alt="" height="22">
       </span>
       <span class="logo-lg">
-        <img src="/velzon/assets/images/logo-dark.png" alt="" height="17">
+        <img src="/velzon/icons/logo.png" alt="" height="17">
       </span>
     </a>
     <!-- Light Logo-->
     <a href="../../../dashboard" class="logo logo-light">
       <span class="logo-sm">
-        <img src="/velzon/assets/images/logo-sm.png" alt="" height="22">
+        <img src="/velzon/icons/logo.png" alt="" height="22">
       </span>
       <span class="logo-lg">
-        <img src="/velzon/assets/images/logo-light.png" alt="" height="17">
+        <img src="/velzon/icons/logo.png" alt="" height="17">
       </span>
     </a>
     <button type="button" class="btn btn-sm p-0 fs-20 header-item float-end btn-vertical-sm-hover" id="vertical-hover">
@@ -33,65 +33,87 @@
       <ul class="navbar-nav" id="navbar-nav">
         <li class="menu-title"><span data-key="t-menu">Menu</span></li>
         <li class="nav-item">
-          <a class="nav-link menu-link" href="/dashboard">
-            <i class="bx bxs-dashboard"></i> Dashboard
+          <a class="nav-link menu-link" href="/main" id="a_/dashboard">
+            <i class="ri-arrow-left-line"></i> <span data-key="t-widgets">Kembali ke Main Menu</span>
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link menu-link" href="/devices">
-            <i class="bx bx-devices"></i> Devices
+          <a class="nav-link menu-link" href="<%-session.url_dashboard;%>" id="a_/dashboard">
+            <i class="bx bxs-dashboard"></i> <span data-key="t-widgets">Dashboard</span>
           </a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link menu-link" href="/messages">
-            <i class="bx bx-message"></i> Messages
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link menu-link" href="#sidebarLanding" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarLanding">
-            <i class="ri-mail-send-fill"></i> <span data-key="t-landing">Send Messages</span>
-          </a>
-          <div class="collapse menu-dropdown" id="sidebarLanding">
-            <ul class="nav nav-sm flex-column">
-              <li class="nav-item">
-                <a href="/send" class="nav-link" data-key="t-one-page"> Queue Message </a>
-              </li>
-              <li class="nav-item">
-                <a href="/send/direct" class="nav-link" data-key="t-one-page"> Direct Message </a>
-              </li>
-              <li class="nav-item">
-                <a href="/send/bulk" class="nav-link" data-key="t-nft-landing"> Bulk Message</a>
-              </li>
-            </ul>
-          </div>
-        </li>
+        
+        <% for (let sesMenu = 0; sesMenu < session.menu.length; sesMenu++) {  var menuTop = session.menu[sesMenu];%>
+          <!--if menu have child -->
+          <% if(menuTop.childs.length != 0){%>
+            <li class="nav-item">
+              <a class="nav-link menu-link " href="#<%- menuTop.menu_id %>" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="<%- menuTop.menu_id %>">
+                <i class="<%- menuTop.icon %>"></i> <span data-key="t-landing"><%- menuTop.menu_name%></span>
+              </a>
+              <div class="collapse menu-dropdown" id="<%- menuTop.menu_id %>">
+                <ul class="nav nav-sm flex-column">
+                  <% for (let sesMenu1 = 0; sesMenu1 < menuTop.childs.length; sesMenu1++) {  var menuTop1 = menuTop.childs[sesMenu1];%>
 
-        <li class="nav-item">
-          <a class="nav-link menu-link" href="/swagger">
-            <i class="mdi mdi-api"></i> API
-          </a>
-        </li>
+                    <!--if menu have child -->
+                    <% if(menuTop1.childs.length != 0){%>
+                      <li class="nav-item">
+                        <a class="nav-link menu-link" href="#<%- menuTop1.menu_id %>" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="<%- menuTop1.menu_id %>">
+                          <span data-key="t-landing"><%- menuTop1.menu_name%></span>
+                        </a>
+                        <div class="collapse menu-dropdown" id="<%- menuTop1.menu_id %>">
+                          <ul class="nav nav-sm flex-column">
+                            <% for (let sesMenu2 = 0; sesMenu2 < menuTop1.childs.length; sesMenu2++) {  var menuTop2 = menuTop1.childs[sesMenu2];%>
+          
+                              <!--if menu have child -->
+                              <% if(menuTop2.childs.length != 0){%>
+          
+                              <% }else{ %>
+                              <!--if menu don't have child -->
+                                <li class="nav-item"><a href="<%- menuTop2.url %>" id="a_<%- menuTop2.url %>" class="nav-link" data-key="t-one-page"> <%- menuTop2.menu_name%></a></li>
+                              <% } %>
+                              
+                            <% } %>
+                          </ul>
+                        </div>
+                      </li>
+                    <% }else{ %>
+                    <!--if menu don't have child -->
+                      <li class="nav-item"><a href="<%- menuTop1.url %>" id="a_<%- menuTop1.url %>" class="nav-link" data-key="t-one-page"><%- menuTop1.menu_name%></a></li>
+                    <% } %>
+
+                  <% } %>
+                </ul>
+              </div>
+            </li>
+          <% }else{ %>
+          <!--if menu don't have child -->
+          <li class="nav-item">
+            <a class="nav-link menu-link" href="<%- menuTop.url %>">
+              <i class="<%- menuTop.icon %>"></i> <span data-key="t-widgets"><%- menuTop.menu_name%></span>
+            </a>
+          </li>
+          <% } %>
+
+        <% } %>
+        
       </ul>
     </div>
     <!-- Sidebar -->
   </div>
 </div>
-<button onclick="topFunction()" class="btn btn-danger btn-icon" id="back-to-top">
-  <i class="ri-arrow-up-line"></i>
-</button>
-
-<div class="customizer-setting d-none d-md-block" onclick="gototiketing()">
-  <div class="btn-info btn-rounded shadow-lg btn btn-icon btn-lg p-2">
-    <i class='mdi mdi-deskphone fs-22'></i>
-  </div>
-</div>
-
+  <!--end back-to-top-->
 <!-- Left Sidebar End -->
 <!-- Vertical Overlay-->
 <div class="vertical-overlay"></div>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <script>
   function gototiketing() {
-    window.open('https://ticketing.galeritekno.com/', '_blank');
+    // window.open('', '_blank');
   }
+
+  var curUrl = window.location.href
+  var curUrlSplit = curUrl.split("/");
+  var urlActiveMenu = `a_/${curUrlSplit[curUrlSplit.length - 1]}`
+  // var d = document.getElementById(urlActiveMenu);
+  // d.className += " active";
+  
 </script>

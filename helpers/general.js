@@ -652,6 +652,25 @@ function isInt(value) {
   );
 }
 
+async function upsert(db, values, condition, isUpdate = true) {
+  try {
+    return await db.findOne({ where: condition })
+      .then(async function(obj) {
+          if(obj){
+            if(isUpdate){
+              return await obj.update(values);
+            }
+            return obj;
+          }else{
+            return await db.create(values);
+          }
+      })
+  } catch (error) {
+    console.log('upsert', error)
+  }
+  
+}
+
 module.exports = {
   dateNow,
   dateMonthNow,
@@ -679,4 +698,5 @@ module.exports = {
   moneyFormat,
   dateToString,
   isInt,
+  upsert
 };

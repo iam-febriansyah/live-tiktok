@@ -2,9 +2,15 @@ module.exports = (sequelize, Sequelize) => {
   const room = sequelize.define(
     "room",
     {
+      id: {
+        type: Sequelize.INTEGER,
+        primaryKey: true,
+        allowNull: false,
+        autoIncrement: true,
+      },
       room_id: {
         type: Sequelize.STRING,
-        allowNull: false,
+        allowNull: true,
       },
       user_id: {
         type: Sequelize.STRING,
@@ -15,11 +21,15 @@ module.exports = (sequelize, Sequelize) => {
         allowNull: false,
       },
       start_live_date: {
-        type: Sequelize.DATE,
-        allowNull: false,
+        type: "TIMESTAMP",
+        allowNull: true,
       },
       end_live_date: {
-        type: Sequelize.DATE,
+        type: "TIMESTAMP",
+        allowNull: true,
+      },
+      end_reason: {
+        type: Sequelize.STRING,
         allowNull: true,
       },
 

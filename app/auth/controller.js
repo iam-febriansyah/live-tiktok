@@ -12,7 +12,7 @@ module.exports = {
         var token = req.cookies.auth;
         jwt.verify(token, process.env.JWT_KEY, function (err, token_data) {
           if (err) {
-            res.render("layout/users/view", {
+            res.render("layout/auth/index", {
               title: "Sign",
               baseurl: help.baseurl(req),
             });
@@ -25,7 +25,7 @@ module.exports = {
               };
               res.redirect("/dashboard");
             } else {
-              res.render("layout/users/view", {
+              res.render("layout/auth/index", {
                 title: "Sign",
                 baseurl: help.baseurl(req),
               });

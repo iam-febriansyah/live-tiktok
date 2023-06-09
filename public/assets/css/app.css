@@ -14317,3 +14317,6 @@ span.flatpickr-weekday {
 #tasksList tr:hover .tasks-list-menu {
   opacity: 1;
 }
+.text-right{
+  text-align: right;
+}
