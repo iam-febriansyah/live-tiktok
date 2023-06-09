@@ -1,3 +1,6 @@
+
+const bcrypt = require("bcryptjs");
+
 async function dbAccess(db) {
   try {
     await db.sequelize.authenticate().then(function (err) {
