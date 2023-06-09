@@ -39,7 +39,7 @@ module.exports = {
         baseurl: url(req),
         baseurlDomain: help.baseurl(req),
       };
-      res.render("layout/gift/view", data);
+      res.render("layout/gift/index", data);
     } catch (err) {
       res.render("error", { error: err });
     }
