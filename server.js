@@ -7,7 +7,7 @@ var bodyParser = require("body-parser");
 var server = require("http").createServer(app);
 const methodOverride = require("method-override");
 const cron = require("node-cron");
-const path = require('path');
+const path = require("path");
 const help = require("./app/helper");
 const db = require("./app/db");
 
@@ -20,6 +20,10 @@ var io = require("socket.io")(server, {
   allowEIO3: true,
 });
 
+app.use(cors());
+app.use(bodyParser.json({ limit: "50mb" }));
+app.use(express.json({ limit: "50mb" }));
+
 app.all("*", function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Credentials", true);
@@ -28,21 +32,41 @@ app.all("*", function (req, res, next) {
   res.header("Access-Control-Allow-Headers", "Content-Type");
   next();
 });
+app.set("views", path.join(__dirname, "views"));
+app.set("view engine", "ejs");
 
-app.use(cors());
+app.use(
+  session({
+    secret: "live-tiktok",
+    resave: false,
+    saveUninitialized: true,
+    cookie: {},
+  })
+);
+
+app.use(flash());
 app.use(methodOverride("_method"));
+app.use(function (req, res, next) {
+  res.io = io;
+  next();
+});
+
+app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, "public")));
+app.use("/velzon", express.static(path.join(__dirname, "/public/")));
+app.use("/app", express.static(path.join(__dirname, "/app/")));
+
 app.use(async function (req, res, next) {
   req.io = io;
   res.io = io;
   next();
 });
 
-app.get('/socket/:id', function(req, res) {
-  var account = req.params.id
+app.get("/socket/:id", function (req, res) {
+  var account = req.params.id;
   var htmlRes = html(account);
   res.send(htmlRes);
 });
@@ -50,37 +74,27 @@ app.get('/socket/:id', function(req, res) {
 const swaggerUi = require("swagger-ui-express");
 const swaggerDocument = require("./swagger.json");
 
+var authRoute = require("./app/auth/router");
+var dashboardRoute = require("./app/dashboard/router");
+var userRoute = require("./app/user/router");
+var giftRoute = require("./app/gift/router");
 var apiRoute = require("./app/api/router.js");
-require("./db/index.js")(app)
+// require("./db/index.js")(app);
+app.use("/", authRoute);
+app.use("/dashboard", dashboardRoute);
+app.use("/user", userRoute);
+app.use("/gift", giftRoute);
 app.use("/api", apiRoute);
-app.use("/", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-
-// require('./app/live')(io);
+app.use("/api-doc", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 
-var cronStatus = {};
-var cronStorage = {};
-async function cronFunction(time, timeTxt) {
-  var variableName = timeTxt;
-  cronStatus[variableName] = true;
-  var task = cron.schedule(time, async () => {
-    var dateNow = help.dateTimeNow()
-    if(timeTxt == '1am'){
-      db.destroyDb();
-    }
-    cronStorage[`${timeTxt}${dateNow}`] = task;
-  });
-}
-
-cronFunction("0 1 * * *", '1am'); /*every at 1am*/
-
-function html(account){
+function html(account) {
   var http = process.env.HTTP;
   var baseurl = process.env.BASEURL;
   var port = process.env.PORT;
   var domain = `${http}${baseurl}`;
-  if(port != '' && typeof port != 'undefined'){
-    domain = `${domain}:${port}`
+  if (port != "" && typeof port != "undefined") {
+    domain = `${domain}:${port}`;
   }
   return `<!DOCTYPE html>
           <html lang="en">
@@ -137,7 +151,7 @@ function html(account){
           
           </body>
           </html>
-          `
+          `;
 }
 
 module.exports = { app, server };

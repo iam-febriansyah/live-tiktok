@@ -1,12 +1,8 @@
 var express = require("express");
 var router = express.Router();
 
-const { listChat, listGift, addUser, nonActiveUser, activeUser } = require("./controller");
+const { access, setUsername } = require("./controller");
 
-router.post("/add", addUser);
-router.post("/non-active", nonActiveUser);
-router.post("/active", activeUser);
-
-router.post("/chats", listChat);
-router.post("/gifts", listGift);
+router.post("/access", access);
+router.post("/set-username", setUsername);
 module.exports = router;

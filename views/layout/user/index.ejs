@@ -1,0 +1,325 @@
+<%- include('../../partials/header.ejs') %>
+<%- include('../../partials/topbar.ejs') %>
+<%- include('../../partials/sidebar.ejs') %>
+<div class="main-content">
+    <div class="page-content">
+        <div class="container-fluid">
+        <%- include('../../partials/page-title.ejs') %>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card" id="leadsList">
+                        <div class="row" style="padding: 8px 8px 8px 8px">
+                            <div class="col-md-12" id="divAlertInfo"></div>
+                            <div class="col-sm-3">
+                                <div class="search-box">
+                                    <input type="text" id="myCustomSearchBox" class="form-control search" placeholder="Search for...">
+                                    <i class="ri-search-line search-icon"></i>
+                                </div>
+                            </div>
+                            <div class="col-sm-3 text-right">
+                                <button class="btn btn-danger" onclick="showModal('Form Tambah')"><i class=" ri-folder-add-line"></i> Tambah User Baru</button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="col-md-6" id="divError" style="display:none">
+                                <div class="row col-md-12">
+                                    <span id="spanError"></span>
+                                </div>
+                            </div>
+                            <div class="table-responsive table-card">
+                                <table class="table align-middle" id="tableUtama" style="width: 100%; ">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th style="width:5%" class="text-center">No</th>
+                                            <th style="width:15%" class="text-center">Domain</th>
+                                            <th style="width:20%">Email</th>
+                                            <th style="width:15%">License</th>
+                                            <th style="width:10%" class="text-center">Aktifasi</th>
+                                            <th style="width:10%" class="text-center"> Aktifitas <br> Terkahir </th>
+                                            <th style="width:10%" class="text-center">Live</th>
+                                            <th style="width:15%" class="text-center">#</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="modalAddEdit" class="modal fade zoomIn" tabindex="-1" aria-labelledby="modalAddEditLabel" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header p-3 bg-soft-info p-3 bg-soft-info">
+                    <h5 class="modal-title" id="modalAddEditLabel">Modal Heading</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col">
+                            <input type="hidden" id="user_id">
+                            <div class="mb-3">
+                                <label for="domain" class="col-form-label">Domain/Host</label>
+                                <input type="text" class="form-control form-control-sm" id="domain">
+                            </div>
+                            <div class="mb-3">
+                                <label for="email" class="col-form-label">Email</label>
+                                <input type="email" class="form-control form-control-sm" id="email">
+                            </div>
+                            <div class="mb-3">
+                                <label for="license" class="col-form-label">License</label>
+                                <input type="text" class="form-control form-control-sm" id="license">
+                            </div>
+                            <div class="mb-3">
+                                <label for="expire_date" class="col-form-label">Masa Aktif Sampai</label>
+                                <input type="date" class="form-control" id="expire_date" placeholder="Pilih Tanggal" data-provider="flatpickr" data-time="true">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                    <button type="button" id="btnSave" class="btn btn-primary" onclick="submit()">Save Changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <%- include('../../partials/footer.ejs') %>
+</div>
+<%- include('../../partials/customizer.ejs') %>
+<%- include('../../partials/vendor-scripts.ejs') %>
+<div id="modalLoading"></div>
+
+<script type='text/javascript' src='/velzon/assets/js/toastify-js.js'></script>
+<script type='text/javascript' src='/velzon/assets/libs/choices.js/public/assets/scripts/choices.min.js'></script>
+<script type='text/javascript' src='/velzon/assets/libs/flatpickr/flatpickr.min.js'></script>
+<script src="/velzon/assets/libs/sortablejs/Sortable.min.js"></script>
+<script src="/velzon/assets/js/pages/nestable.init.js"></script>
+<script src="/velzon/assets/js/app.js"></script>
+
+
+<script src="/velzon/assets/js/iziToast.min.js" ></script>
+<script src="/velzon/assets/js/iziToast.js"></script>
+<script src="/velzon/assets/js/sweetalert.js"></script>
+<script src="/velzon/assets/js/jquery.dataTables.min.js"></script>
+<script src="/velzon/assets/js/dataTables.bootstrap4.min.js"></script>
+<script src="/velzon/assets/js/select2.min.js"></script>
+
+
+<script>
+    var baseUrl = '<%- baseurl %>';
+    $(document).ready(async function() {
+        dataTableUtama();
+    });
+
+    function showModal(title){
+        clear();
+        $('#modalAddEdit').modal('show'); 
+        var modalAddEditLabel = document.getElementById('modalAddEditLabel');
+        modalAddEditLabel.innerHTML = title;
+    }
+
+    function clear(){
+        $("#user_id").val("");
+        $("#domain").val("");
+        $("#email").val("");
+        $("#license").val("");
+        $("#expire_date").val("");
+    }
+
+    async function submit(type = ''){
+        var btnId = document.getElementById('btnSave');
+
+        var role_access = $("#role_access").val()
+        var auth_user_id = $("#auth_user_id").val();
+        var email = $("#email").val();
+        var nrp = $("#nrp").val();
+        var fullname = $("#fullname").val();
+        var password = $("#password").val();
+        var re_password = $("#re_password").val();
+        
+        if(type == '' && auth_user_id == ''){
+            type = 'add';
+        }else if(type == '' && auth_user_id != ''){
+            type = 'edit';
+        }
+
+        if(type != 'delete' && email == ''){
+            showSnackError('Mohon isi Email');
+            return false;
+        }
+
+        if(type != 'delete' && nrp == ''){
+            showSnackError('Mohon isi NRP');
+            return false;
+        }
+
+        if(type != 'delete' && fullname == ''){
+            showSnackError('Mohon isi Nama Lengkap');
+            return false;
+        }
+
+        if(type == 'add' || ($("#change_password").prop('checked') == true && type == 'edit') ){
+            if(password == ''){
+                showSnackError('Mohon isi Password');
+                return false;
+            }
+            if(password != re_password){
+                showSnackError('Password tidak cocok, harap ulangi password');
+                return false;
+            }
+        }
+
+        await showLoading("Mohon tunggu..");
+        var dataPost = {
+            type: type,
+            auth_user_id: auth_user_id,
+            email: email,
+            nrp: nrp,
+            email: email,
+            fullname: fullname,
+            password: password,
+            re_password: re_password,
+            change_password: $("#change_password").prop('checked') == true ? 1 : 0,
+            role_access: role_access
+        }
+        var url = `${baseUrl}/add-edit-delete`;
+        var res = await ajaxPostWIthList(url, dataPost, btnId);
+        if (res.status) {
+            showSnackSuccess(res.remarks);
+            $("#auth_user_id").val('')
+            $("#email").val('')
+            $("#nrp").val('')
+            $("#fullname").val('')
+            $("#pasword").val('')
+            $("#re_pasword").val('')
+            $("#role_access").val('')
+            $('#modalAddEdit').modal('hide');
+            dataTableUtama();
+        } else {
+            showSnackError(res.remarks);
+        }
+        btnId.disabled = false;
+        await dismisLoading();
+    }
+
+    async function showEdit(btnid, id){
+        var res = await getSingle(btnid, id);
+        showModal("Form Edit");
+        $("#user_id").val(data.user_id);
+        $("#domain").val(data.domain);
+        $("#email").val(data.email);
+        $("#license").val(data.license);
+        $("#expire_date").val(data.expire_date);
+    }
+
+    async function showDelete(btnid, id){
+        var data = await getSingle(btnid, id);
+        var res = await confirmDelete();
+        if(res.isConfirmed){
+            var url = `${baseUrl}/del`;
+            var dataPost = { user_id : id }
+            var res = await ajaxPostWIthList(url, dataPost, btnId);
+        }
+    }
+
+    async function getSingle(btnid, id){
+        await showLoading("Mohon tunggu..");
+        var btnId = document.getElementById(btnid);
+        var dataPost = { user_id: id }
+        var url = `${baseUrl}/get-single`;
+        var res = await ajaxPostWIthList(url, dataPost, btnId);
+        btnId.disabled = false;
+        await dismisLoading();
+        if (res.status) {
+            return res.data;
+        } else {
+            showSnackError(res.remarks);
+            return false;
+        }
+    }
+
+    var dtable = "";
+    const dataTableUtama = () => {
+        var buildSearchData = {}
+        dtable = $('#tableUtama').DataTable({
+            searching: true,
+            lengthChange: false,
+            "dom": "lrtip",
+            "bDestroy": true,
+            "aaSorting": [],
+            ajax: {
+                type: "POST",
+                url: `${baseUrl}/get-data`,
+                dataSrc: 'data',
+                data: buildSearchData
+            },
+            columns: [
+                {
+                    "data": "", 
+                    render: function (data, type, row, meta) {
+                        return meta.row + 1;
+                    }  
+                },
+                {
+                    "data": 'domain'
+                },
+                {
+                    "data": 'email'
+                },
+                {
+                    "data": 'license'
+                },
+                {
+                    data: null,
+                    render: (data) => {
+                        var res = '';
+                        var res = data.start_date ?? '-';
+                        return res;
+                    }
+                },
+                {
+                    data: null,
+                    render: (data) => {
+                        var res = '';
+                        var res = data.last_activity_date ?? '-';
+                        return res;
+                    }
+                },
+                {
+                    data: null,
+                    render: (data) => {
+                        var res = '';
+                        var on_live = data.on_live;
+                        if(on_live == 1){
+                            res = `<span class="badge text-bg-success">On Live</span>`
+                        }else{
+                            res = `<span class="badge text-bg-danger">Off</span>`
+                        }
+                        return res;
+                    }
+                },
+                {
+                    data: null,
+                    render: (data) => {
+                        var res = '';
+                        var btnId = `edit-${data.user_id}`;
+                        res += `<button id="${btnId}" class="btn btn-sm btn-info" onclick="showEdit('${btnId}', '${data.user_id}')"><i class="bx bx-message-square-edit"></i> Edit</button> `
+                        res += `<button id="${btnId}" class="btn btn-sm btn-danger" onclick="showDelete('${btnId}', '${data.user_id}')"><i class="bx bx-trash"></i> Hapus</button> `
+                        return res;
+                    }
+                },
+            ],
+            "columnDefs": [{
+                "className": 'text-center',
+                "targets": [0, 1, 4, 5, 6, 7]
+            }],
+        });
+        $('#myCustomSearchBox').keyup(function() {
+            dtable.search($(this).val()).draw();
+        })
+    };
+</script>
+</body>
+</html>
