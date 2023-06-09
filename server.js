@@ -6,10 +6,8 @@ var cors = require("cors");
 var bodyParser = require("body-parser");
 var server = require("http").createServer(app);
 const methodOverride = require("method-override");
-const cron = require("node-cron");
 const path = require("path");
-const help = require("./app/helper");
-const db = require("./app/db");
+var cookieParser = require("cookie-parser");
 
 var io = require("socket.io")(server, {
   cors: {
@@ -44,14 +42,12 @@ app.use(
   })
 );
 
-app.use(flash());
 app.use(methodOverride("_method"));
 app.use(function (req, res, next) {
   res.io = io;
   next();
 });
 
-app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
