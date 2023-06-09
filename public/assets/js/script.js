@@ -93,7 +93,7 @@ async function ajaxPost(url, dataPost, btnId) {
     return await Promise.resolve(
       $.ajax({
         url: url,
-        headers: header,
+        // headers: header,
         type: "post",
         dataType: "json",
         data: dataPost,
@@ -159,7 +159,7 @@ async function ajaxPostWIthList(url, dataPost, btnId) {
     return await Promise.resolve(
       $.ajax({
           url: url,
-          headers: header,
+          // headers: header,
           type: "post",
           dataType: "json",
           data: JSON.stringify(dataPost),
