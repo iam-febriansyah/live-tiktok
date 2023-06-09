@@ -12,7 +12,8 @@ async function dbAccess(db) {
             auth_user_id : 'admin',
             email : 'admin@admin.com',
             name : "Admin",
-            password : hashedPassword
+            password : hashedPassword,
+            created_by : "admin"
           }
           await db.auth_user.create(data);
         });
