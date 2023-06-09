@@ -14,6 +14,7 @@ module.exports = {
           if (err) {
             res.render("layout/auth/index", {
               title: "Sign",
+              session: req.session,
               versionUpdate : help.nowNoSpace(),
               baseurl: help.baseurl(req),
               baseurlDomain: help.baseurl(req),
@@ -29,6 +30,7 @@ module.exports = {
             } else {
               res.render("layout/auth/index", {
                 title: "Sign",
+                session: req.session,
                 versionUpdate : help.nowNoSpace(),
                 baseurl: help.baseurl(req),
                 baseurlDomain: help.baseurl(req),
