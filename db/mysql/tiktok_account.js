@@ -1,29 +1,36 @@
 module.exports = (sequelize, Sequelize) => {
-  const accounts = sequelize.define(
-    "accounts",
+  const tiktok_account = sequelize.define(
+    "tiktok_account",
     {
       account_id_key: {
-        type: Sequelize.STRING,
+        type: Sequelize.INTEGER,
         primaryKey: true,
         allowNull: false,
+        autoIncrement: true,
       },
-      account: {
+      username: {
         type: Sequelize.STRING,
         allowNull: false,
       },
       status: {
         type: Sequelize.INTEGER,
         allowNull: false,
+        defaultValue: 0,
       },
       isRunning: {
         type: Sequelize.INTEGER,
         allowNull: false,
+        defaultValue: 0,
       },
     },
     {
       timestamps: false,
-      tableName: "accounts",
+      tableName: "tiktok_account",
       indexes: [
+        {
+          unique: true,
+          fields: ["account_id_key"],
+        },
         {
           unique: true,
           fields: ["username"],
@@ -31,5 +38,5 @@ module.exports = (sequelize, Sequelize) => {
       ],
     }
   );
-  return accounts;
+  return tiktok_account;
 };

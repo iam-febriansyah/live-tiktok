@@ -21,11 +21,13 @@ module.exports = (sequelize, Sequelize) => {
         allowNull: false,
       },
       start_live_date: {
-        type: "TIMESTAMP",
+        type: "DATETIME",
+        defaultValue: null,
         allowNull: true,
       },
       end_live_date: {
-        type: "TIMESTAMP",
+        type: "DATETIME",
+        defaultValue: null,
         allowNull: true,
       },
       end_reason: {
@@ -43,7 +45,8 @@ module.exports = (sequelize, Sequelize) => {
         allowNull: false,
       },
       updated_at: {
-        type: "TIMESTAMP",
+        type: "DATETIME",
+        defaultValue: null,
         allowNull: true,
       },
       updated_by: {
@@ -60,7 +63,7 @@ module.exports = (sequelize, Sequelize) => {
       tableName: "room",
       indexes: [
         {
-          unique: true,
+          unique: false,
           fields: ["room_id"],
         },
         {

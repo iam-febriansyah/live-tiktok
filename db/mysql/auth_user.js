@@ -20,7 +20,7 @@ module.exports = (sequelize, Sequelize) => {
         allowNull: false,
       },
       created_at: {
-        type: "TIMESTAMP",
+        type: "DATETIME",
         defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
         allowNull: false,
       },
@@ -29,15 +29,18 @@ module.exports = (sequelize, Sequelize) => {
         allowNull: false,
       },
       updated_at: {
-        type: "TIMESTAMP",
+        type: "DATETIME",
+        defaultValue: null,
         allowNull: true,
       },
       updated_by: {
         type: Sequelize.STRING,
+        defaultValue: null,
         allowNull: true,
       },
       is_deleted: {
         type: Sequelize.STRING,
+        defaultValue: null,
         allowNull: true,
       },
     },

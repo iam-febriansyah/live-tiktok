@@ -1,0 +1,128 @@
+<%- include('../../partials/header.ejs') %>
+<%- include('../../partials/topbar.ejs') %>
+<%- include('../../partials/sidebar.ejs') %>
+<style>
+  thead input {
+    width: 100%;
+  }
+
+  #tableUtama_filter {
+    display: none;
+  }
+
+  .padding {
+    margin: 8px;
+  }
+
+  .scroll-max {
+    max-height: 500px;
+    overflow-y: scroll;
+  }
+</style>
+<div class="main-content">
+  <div class="page-content">
+    <div class="container-fluid">
+      <%- include('../../partials/page-title.ejs') %>
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="card" id="leadsList">
+            <div class="row" style="padding: 8px 8px 8px 8px">
+              <div class="col-lg-4">
+                <label for="username" class="form-label">Username TikTok</label>
+                <input type="text" class="form-control" id="username">
+                <button type="button" id="btnSave" class="btn btn-danger" style="margin-top: 8px;" onclick="submit()">
+                  Live Chat/Gift Streaming</button>
+              </div>
+            </div>
+            <div class="card-body row">
+              <div class="col-sm-6 scroll-max" style="background-color:lavender;" id="chat">CHAT</div>
+              <div class="col-sm-6 scroll-max" style="background-color:lavenderblush;" id="gift">GIFT</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <%- include('../../partials/footer.ejs') %>
+</div>
+<%- include('../../partials/customizer.ejs') %>
+<%- include('../../partials/vendor-scripts.ejs') %>
+<div id="modalLoading"></div>
+
+<script type='text/javascript' src='/velzon/assets/js/toastify-js.js'></script>
+<script type='text/javascript' src='/velzon/assets/libs/choices.js/public/assets/scripts/choices.min.js'></script>
+<script type='text/javascript' src='/velzon/assets/libs/flatpickr/flatpickr.min.js'></script>
+<script src="/velzon/assets/libs/sortablejs/Sortable.min.js"></script>
+<script src="/velzon/assets/js/pages/nestable.init.js"></script>
+<script src="/velzon/assets/js/app.js"></script>
+
+
+<script src="/velzon/assets/js/iziToast.min.js"></script>
+<script src="/velzon/assets/js/iziToast.js"></script>
+<script src="/velzon/assets/js/sweetalert.js"></script>
+<script src="/velzon/assets/js/jquery.dataTables.min.js"></script>
+<script src="/velzon/assets/js/dataTables.bootstrap4.min.js"></script>
+<script src="/velzon/assets/js/dataTables.buttons.min.js"></script>
+<script src="/velzon/assets/js/jszip.min.js"></script>
+<script src="/velzon/assets/js/buttons.html5.min.js"></script>
+<script src="/velzon/assets/js/select2.min.js"></script>
+
+<script>
+  var baseUrl = '<%- baseurl %>';
+  var curentUser = '';
+  var chat = document.getElementById('chat');
+  var gift = document.getElementById('gift');
+
+  function add() {
+    var username = $("#username").val();
+    gift.innerHTML = '';
+    chat.innerHTML = '';
+    clear();
+    socket.on(`chat_${username}_admin`, function(data) {
+      var nickname = data.nickname;
+      var comment = data.comment;
+      var createdAt = data.createdAt;
+      var html = '<b>' + nickname + '</b><br>';
+      html += '<small>' + createdAt + '</small><br>';
+      html += '<p>' + comment + '</p>';
+      chat.innerHTML += html;
+      chat.scrollTop = chat.scrollHeight;
+    });
+    socket.on(`gift_${username}_admin`, function(data) {
+      console.log(data)
+      var nickname = data.nickname;
+      var giftName = data.giftName;
+      var createdAt = data.createdAt;
+      var html = '<b>' + nickname + '</b><br>';
+      html += '<small>' + createdAt + '</small><br>';
+      html += '<p>' + giftName + '</p>';
+      gift.innerHTML += html;
+      gift.scrollTop = gift.scrollHeight;
+    });
+  }
+
+  function clear() {
+    if (curentUser != '') {
+      socket.off(`chat_${curentUser}_admin`);
+      socket.off(`chat_${curentUser}_admin`);
+    }
+  }
+
+  async function submit() {
+    var username = $("#username").val();
+    var url = `${baseurlDomain}/api/set-username`;
+    var dataPost = {
+      license: 'admin',
+      username: username,
+    }
+    if (username != '') {
+      var res = await ajaxPostWIthList(url, dataPost, "");
+      if (res.status) {
+        add();
+      }
+    }
+  }
+</script>
+</body>
+
+</html>
