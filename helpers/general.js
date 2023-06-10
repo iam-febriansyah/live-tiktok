@@ -128,12 +128,7 @@ function strToFloat(str) {
 
 function baseurl(req) {
   var hostname = req.headers.host;
-  var port = process.env.PORT;
-  if (port == "" || port == null) {
-    return process.env.HTTP + "" + hostname;
-  } else {
-    return process.env.HTTP + "" + hostname + ":" + process.env.PORT;
-  }
+  return process.env.HTTP + "" + hostname;
 }
 
 async function generatePdfNew(req, { pathFolder, fileName, dataView, view, options }) {
@@ -652,21 +647,19 @@ function isInt(value) {
 
 async function upsert(db, values, condition, isUpdate = true) {
   try {
-    return await db.findOne({ where: condition })
-      .then(async function(obj) {
-          if(obj){
-            if(isUpdate){
-              return await obj.update(values);
-            }
-            return obj;
-          }else{
-            return await db.create(values);
-          }
-      })
+    return await db.findOne({ where: condition }).then(async function (obj) {
+      if (obj) {
+        if (isUpdate) {
+          return await obj.update(values);
+        }
+        return obj;
+      } else {
+        return await db.create(values);
+      }
+    });
   } catch (error) {
-    console.log('upsert', error)
+    console.log("upsert", error);
   }
-  
 }
 
 module.exports = {
@@ -696,5 +689,5 @@ module.exports = {
   moneyFormat,
   dateToString,
   isInt,
-  upsert
+  upsert,
 };

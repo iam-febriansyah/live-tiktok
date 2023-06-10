@@ -1,82 +1,84 @@
-<%- include('../../../../partials/header.ejs') %>
-<%- include('../../../../partials/topbar.ejs') %>
-<%- include('../../../../partials/sidebar.ejs') %>
+<%- include('../../partials/header.ejs') %>
+<%- include('../../partials/topbar.ejs') %>
+<%- include('../../partials/sidebar.ejs') %>
 <style>
-    thead input {
-        width: 100%;
-    }
-    #tableUtama_filter{
-        display: none;
-    }
-    .padding{
-        margin: 8px;
-    }
+  thead input {
+    width: 100%;
+  }
+
+  #tableUtama_filter {
+    display: none;
+  }
+
+  .padding {
+    margin: 8px;
+  }
 </style>
 <div class="main-content">
-    <div class="page-content">
-        <div class="container-fluid">
-        <%- include('../../../../partials/page-title.ejs') %>
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="card" id="leadsList">
-                        <div class="row" style="padding: 8px 8px 8px 8px">
-                            <div class="col-lg-4">
-                                <label for="start" class="form-label">Tanggal Dari </label>
-                                <input type="date" class="form-control" name="start" id="start" placeholder="Pilih Tanggal" value="<%- sekarang %>" data-provider="flatpickr" data-time="true" onchange="dataTableUtama()">
-                            </div>
-                            <div class="col-lg-4">
-                                <label for="end" class="form-label">Tanggal Sampai </label>
-                                <input type="date" class="form-control" name="end" id="end" placeholder="Pilih Tanggal" value="<%- sekarang %>" data-provider="flatpickr" data-time="true" onchange="dataTableUtama()">
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <div class="table-responsive table-card">
-                                <table class="table align-middle table-bordered table-sm" id="tableUtama" style="width: 100%; ">
-                                    <thead class="table-light">
-                                        <tr>
-                                            <th style="width:5%">No</th>
-                                            <th style="width:15%">Email</th>
-                                            <th style="width:20%">TikTok Username</th>
-                                            <th style="width:15%">Tanggal Live</th>
-                                            <th style="width:15%">Akhir Live</th>
-                                            <th style="width:10%">Total Gift</th>
-                                        </tr>
-                                    </thead>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+  <div class="page-content">
+    <div class="container-fluid">
+      <%- include('../../partials/page-title.ejs') %>
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="card" id="leadsList">
+            <div class="row" style="padding: 8px 8px 8px 8px">
+              <div class="col-lg-4">
+                <label for="start" class="form-label">Tanggal Dari </label>
+                <input type="date" class="form-control" name="start" id="start" placeholder="Pilih Tanggal" value="<%- sekarang %>" data-provider="flatpickr" data-time="true" onchange="dataTableUtama()">
+              </div>
+              <div class="col-lg-4">
+                <label for="end" class="form-label">Tanggal Sampai </label>
+                <input type="date" class="form-control" name="end" id="end" placeholder="Pilih Tanggal" value="<%- sekarang %>" data-provider="flatpickr" data-time="true" onchange="dataTableUtama()">
+              </div>
             </div>
-        </div>
-    </div>
-    <div id="modalAddEdit" class="modal fade zoomIn" tabindex="-1" aria-labelledby="modalAddEditLabel" aria-hidden="true" style="display: none;">
-        <div class="modal-dialog modal-dialog-centered modal-xl">
-            <div class="modal-content">
-                <div class="modal-header p-3 bg-soft-info p-3 bg-soft-info">
-                    <h5 class="modal-title" id="modalAddEditLabel">Modal Heading</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="mb-3" style="max-height: 500px; width: 100%; overflow: auto; display:inline-block;">
-                        <table class="table table-sm table-bordered table-hovered" id="tblDetails">
-                            <thead>
-                                <tr>
-                                    <th class="text-center">No</th>
-                                    <th>Data</th>
-                                </tr>
-                            </thead>
-                            <tbody id="tbodyDetail"></tbody>
-                        </table>
-                    </div>
-                </div>
+            <div class="card-body">
+              <div class="table-responsive table-card">
+                <table class="table align-middle table-bordered table-sm" id="tableUtama" style="width: 100%; ">
+                  <thead class="table-light">
+                    <tr>
+                      <th style="width:5%">No</th>
+                      <th style="width:15%">Email</th>
+                      <th style="width:20%">TikTok Username</th>
+                      <th style="width:15%">Tanggal Live</th>
+                      <th style="width:15%">Akhir Live</th>
+                      <th style="width:10%">Total Gift</th>
+                    </tr>
+                  </thead>
+                </table>
+              </div>
             </div>
+          </div>
         </div>
+      </div>
     </div>
-    <%- include('../../../../partials/footer.ejs') %>
+  </div>
+  <div id="modalAddEdit" class="modal fade zoomIn" tabindex="-1" aria-labelledby="modalAddEditLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+      <div class="modal-content">
+        <div class="modal-header p-3 bg-soft-info p-3 bg-soft-info">
+          <h5 class="modal-title" id="modalAddEditLabel">Modal Heading</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3" style="max-height: 500px; width: 100%; overflow: auto; display:inline-block;">
+            <table class="table table-sm table-bordered table-hovered" id="tblDetails">
+              <thead>
+                <tr>
+                  <th class="text-center">No</th>
+                  <th>Data</th>
+                </tr>
+              </thead>
+              <tbody id="tbodyDetail"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <%- include('../../partials/footer.ejs') %>
 </div>
-<%- include('../../../../partials/customizer.ejs') %>
-<%- include('../../../../partials/vendor-scripts.ejs') %>
+<%- include('../../partials/customizer.ejs') %>
+<%- include('../../partials/vendor-scripts.ejs') %>
 <div id="modalLoading"></div>
 
 <script type='text/javascript' src='/velzon/assets/js/toastify-js.js'></script>
@@ -87,7 +89,7 @@
 <script src="/velzon/assets/js/app.js"></script>
 
 
-<script src="/velzon/assets/js/iziToast.min.js" ></script>
+<script src="/velzon/assets/js/iziToast.min.js"></script>
 <script src="/velzon/assets/js/iziToast.js"></script>
 <script src="/velzon/assets/js/sweetalert.js"></script>
 <script src="/velzon/assets/js/jquery.dataTables.min.js"></script>
@@ -98,226 +100,236 @@
 <script src="/velzon/assets/js/select2.min.js"></script>
 
 <script>
-    var baseUrl = '<%- baseurl %>';
+  var baseUrl = '<%- baseurl %>';
 
-    window.addEventListener('load', async () => {
-        dataTableUtama();
-    });
+  window.addEventListener('load', async () => {
+    dataTableUtama();
+  });
 
-    
-    socket.on('notifDiesCSUpdate', function(data) {
-        if(data){
-            if(data.on_update == 1){
-                fetchdataBtn.innerHTML = '<i class="mdi mdi-spin mdi-loading"></i> '+data.text_update;
-                fetchdataBtn.disabled = true;
-            }else{
-                fetchdataBtn.innerHTML = 'Refresh';
-                fetchdataBtn.disabled = false;
-                if(onUpdate == 1){
-                    dataTableUtama();
-                }
-            }
-            last_update.innerHTML = 'Last Update : '+ data.updated_at;
-            onUpdate = data.on_update;
+
+  socket.on('notifDiesCSUpdate', function(data) {
+    if (data) {
+      if (data.on_update == 1) {
+        fetchdataBtn.innerHTML = '<i class="mdi mdi-spin mdi-loading"></i> ' + data.text_update;
+        fetchdataBtn.disabled = true;
+      } else {
+        fetchdataBtn.innerHTML = 'Refresh';
+        fetchdataBtn.disabled = false;
+        if (onUpdate == 1) {
+          dataTableUtama();
         }
-    });
-
-
-    function showModal(title){
-        $('#modalAddEdit').modal('show'); 
-        var modalAddEditLabel = document.getElementById('modalAddEditLabel');
-        modalAddEditLabel.innerHTML = title;
+      }
+      last_update.innerHTML = 'Last Update : ' + data.updated_at;
+      onUpdate = data.on_update;
     }
-    async function showEdit(btnid, id){
-        var res = await getSingle(btnid, id);
-        var details = res.data;
+  });
 
-        for (let i = 0; i < details.length; i++) {
-            const e = details[i];
-            var no = i+1;
-            var json = e.json_data ?? {};
-            showDataToTable = '';
-            showDataToTable += '<td class="text-center">' + no + '</td>';
-            showDataToTable += '<td>' + json + '</td>';
-            $("#tblDetails > tbody").last().append(`<tr>${showDataToTable}</tr>`);
+
+  function showModal(title) {
+    $('#modalAddEdit').modal('show');
+    var modalAddEditLabel = document.getElementById('modalAddEditLabel');
+    modalAddEditLabel.innerHTML = title;
+  }
+  async function showEdit(btnid, id) {
+    var res = await getSingle(btnid, id);
+    var details = res.data;
+
+    for (let i = 0; i < details.length; i++) {
+      const e = details[i];
+      var no = i + 1;
+      var json = e.json_data ?? {};
+      showDataToTable = '';
+      showDataToTable += '<td class="text-center">' + no + '</td>';
+      showDataToTable += '<td>' + json + '</td>';
+      $("#tblDetails > tbody").last().append(`<tr>${showDataToTable}</tr>`);
+    }
+    showModal("Detail")
+  }
+
+  async function getSingle(btnId, id) {
+    await showLoading("Mohon tunggu..");
+    var dataPost = {
+      room_id: id
+    }
+    var url = `${baseUrl}/get-details`;
+    var res = await ajaxPostWIthList(url, dataPost, btnId);
+    await dismisLoading();
+    if (res.status) {
+      return res;
+    } else {
+      showSnackError(res.remarks);
+      return false;
+    }
+  }
+
+  var initCompleteStatus = false;
+  var dtable = "";
+  var apiData;
+  var colIdxs = 0;
+  var idFilters = [];
+  const filters = document.getElementsByClassName("filters");
+
+  const dataTableUtama = () => {
+    var start = $("#start").val();
+    var end = $("#end").val();
+    var buildSearchData = {
+      start: start,
+      end: end
+    }
+
+    if (filters.length == 0) {
+      $('#tableUtama thead tr')
+        .clone(true)
+        .addClass('filters')
+        .appendTo('#tableUtama thead');
+    }
+
+    dtable = $('#tableUtama').DataTable({
+      searching: true,
+      lengthChange: false,
+      orderCellsTop: true,
+      fixedHeader: true,
+      dom: 'Bfrtip',
+      buttons: [{
+        extend: 'excelHtml5',
+        exportOptions: {
+          orthogonal: 'export'
+        },
+        autoFilter: true,
+        sheetName: `${start} sd ${end}`,
+        className: 'btn btn-success padding',
+        messageTop: `${start} sd ${end}`,
+        text: '<i class="mdi mdi-file-excel-outline"></i> Export Excel',
+        filename: function() {
+          return `${start} sd ${end}`
+        },
+        customize: function(xlsx, row) {
+
         }
-        showModal("Detail")
-    }
-
-    async function getSingle(btnId, id){
-        await showLoading("Mohon tunggu..");
-        var dataPost = { room_id : id }
-        var url = `${baseUrl}/get-details`;
-        var res = await ajaxPostWIthList(url, dataPost, btnId);
-        await dismisLoading();
-        if (res.status) {
+      }],
+      "bDestroy": true,
+      "aaSorting": [],
+      ajax: {
+        type: "POST",
+        url: `${baseUrl}/get-data`,
+        dataSrc: 'data',
+        data: buildSearchData
+      },
+      "drawCallback": function(data) {
+        var response = data.json;
+      },
+      columns: [{
+          "data": "",
+          render: function(data, type, row, meta) {
+            return meta.row + 1;
+          }
+        },
+        {
+          "data": 'email'
+        },
+        {
+          "data": 'tiktok_username'
+        },
+        {
+          data: null,
+          render: (data, type, row) => {
+            var res = data.start_live_date ?? '-';
             return res;
+          }
+        },
+        {
+          data: null,
+          render: (data, type, row) => {
+            var res = data.end_live_date ?? '-';
+            return res;
+          }
+        },
+        {
+          "data": 'total'
+        },
+      ],
+      "columnDefs": [{
+        "className": 'text-center',
+        "targets": [0, 3, 4, 5]
+      }],
+      initComplete: function() {
+        var api = this.api();
+        apiData = api;
+        callFilter(api);
+        var e = $(".dt-button");
+        e.removeClass('dt-button');
+        e.removeClass('buttons-excel');
+        e.removeClass('buttons-html5');
+      },
+    });
+
+    var dtableClick = dtable;
+    $('#tableUtama tbody').on('click', 'tr', async function() {
+      var data = dtableClick.row(this).data();
+      if (typeof data != "undefined") {
+        showEdit('', data.room_id)
+      }
+    });
+    if (initCompleteStatus) {
+      filterInput();
+    }
+  };
+
+  function callFilter(api) {
+    api.columns().eq(0).each(function(colIdx) {
+      if (!initCompleteStatus) {
+        var cell = $('.filters th').eq(
+          $(api.column(colIdx).header()).index()
+        );
+        var title = $(cell).text();
+        var idFilter = "filter_" + colIdx;
+        var type = "text"
+        idFilters.push(idFilter)
+        var inputFilter = "";
+        inputFilter += '<input autocomplete="off" class="form-control form-control-sm"  id="' + idFilter + '" type="' + type + '" placeholder="' + title + '" />';
+        $(cell).html(inputFilter);
+      }
+      filterOnChange(colIdx);
+      colIdxs += 1;
+    });
+    initCompleteStatus = true;
+  }
+
+  function filterOnChange(colIdx) {
+    $('input', $('.filters th').eq($(apiData.column(colIdx).header()).index()))
+      .off('keyup change')
+      .on('change', function(e) {
+        if (this.value == 'on' && colIdx == 4) {
+          var c = $('#min').is(':checked');
+          if (c) {
+            dtable.column(colIdx).search("-").draw();
+          } else {
+            dtable.column(colIdx).search("").draw();
+          }
         } else {
-            showSnackError(res.remarks);
-            return false;
+          $(this).attr('title', $(this).val());
+          var regexr = '({search})';
+          dtable.column(colIdx).search(
+            this.value != '' ? regexr.replace('{search}', '(((' + this.value + ')))') : '',
+            this.value != '',
+            this.value == ''
+          ).draw();
         }
+      })
+      .on('keyup', function(e) {
+        e.stopPropagation();
+        $(this).trigger('change');
+      });
+  }
+
+  function filterInput() {
+    for (let i = 0; i < idFilters.length; i++) {
+      const e = idFilters[i];
+      var colIdx = parseInt(e.replaceAll('filter_', ''));
+      var value = $("#" + e).val()
+      dtable.column(colIdx).search(value).draw();
     }
-
-    var initCompleteStatus = false;
-    var dtable = "";
-    var apiData;
-    var colIdxs = 0;
-    var idFilters = [];
-    const filters = document.getElementsByClassName("filters");
-    
-    const dataTableUtama = () => {
-        var start = $("#start").val();
-        var end = $("#end").val();
-        var buildSearchData = { start : start, end : end }
-
-        if(filters.length == 0){
-            $('#tableUtama thead tr')
-                .clone(true)
-                .addClass('filters')
-                .appendTo('#tableUtama thead');
-        }
-            
-        dtable = $('#tableUtama').DataTable({
-            searching: true,
-            lengthChange: false,
-            orderCellsTop: true,
-            fixedHeader: true,
-            dom: 'Bfrtip',
-            buttons: [{
-                extend: 'excelHtml5',
-                exportOptions: { 
-                    orthogonal: 'export'
-                },
-                autoFilter: true,
-                sheetName: `${start} sd ${end}`,
-                className: 'btn btn-success padding',
-                messageTop: "Control Stock - "+year_month,
-                text: '<i class="mdi mdi-file-excel-outline"></i> Export Excel',
-                filename: function () { return `${start} sd ${end}`},
-                customize: function( xlsx, row ) {
-                    
-                }
-            }],
-            "bDestroy": true,
-            "aaSorting": [],
-            ajax: {
-                type: "POST",
-                url: `${baseUrl}/get-data`,
-                dataSrc: 'data',
-                data: buildSearchData
-            },
-            "drawCallback": function (data) { 
-                var response = data.json;
-            },
-            columns: [
-                {
-                    "data": "", 
-                    render: function (data, type, row, meta) {
-                        return meta.row + 1;
-                    }  
-                },
-                { "data": 'email' },
-                { "data": 'tiktok_username' },
-                {
-                    data: null,
-                    render: (data, type, row) => {
-                        var res = data.start_live_date ?? '-';
-                        return res;
-                    }
-                },
-                {
-                    data: null,
-                    render: (data, type, row) => {
-                        var res = data.end_live_date ?? '-';
-                        return res;
-                    }
-                },
-                { "data": 'total' },
-            ],
-            "columnDefs": [{
-                "className": 'text-center',
-                "targets": [0,3,4,5]
-            }],
-            initComplete: function () {
-                var api = this.api();
-                apiData = api;
-                callFilter(api);
-                var e = $(".dt-button");
-                e.removeClass('dt-button');
-                e.removeClass('buttons-excel');
-                e.removeClass('buttons-html5');
-            },
-        });
-        
-        var dtableClick = dtable;
-        $('#tableUtama tbody').on('click', 'tr', async function () {
-            var data = dtableClick.row( this ).data();
-            if(typeof data != "undefined"){
-                showEdit('', data.room_id)
-            }
-        });
-        if(initCompleteStatus){
-            filterInput();
-        }
-    };
-
-    function callFilter(api){
-        api.columns().eq(0).each(function (colIdx) {
-            if(!initCompleteStatus){
-                var cell = $('.filters th').eq(
-                    $(api.column(colIdx).header()).index()
-                );
-                var title = $(cell).text();
-                var idFilter = "filter_"+colIdx;
-                var type = "text"
-                idFilters.push(idFilter)
-                var inputFilter = ""; 
-                inputFilter += '<input autocomplete="off" class="form-control form-control-sm"  id="'+idFilter+'" type="'+type+'" placeholder="' + title + '" />';
-                $(cell).html(inputFilter);
-            }
-            filterOnChange(colIdx);
-            colIdxs += 1;
-        });
-        initCompleteStatus = true;
-    }
-
-    function filterOnChange(colIdx){
-        $('input', $('.filters th').eq($(apiData.column(colIdx).header()).index()))
-            .off('keyup change')
-            .on('change', function (e) {
-                if(this.value == 'on' && colIdx == 4){
-                    var c = $('#min').is(':checked');
-                    if(c){
-                        dtable.column(colIdx).search("-").draw();
-                    }else{
-                        dtable.column(colIdx).search("").draw();
-                    }
-                }else{
-                    $(this).attr('title', $(this).val());
-                    var regexr = '({search})'; 
-                    dtable.column(colIdx).search(
-                        this.value != '' ? regexr.replace('{search}', '(((' + this.value + ')))') : '',
-                        this.value != '',
-                        this.value == ''
-                    ).draw();
-                }
-            })
-            .on('keyup', function (e) {
-                e.stopPropagation();
-                $(this).trigger('change');
-            });
-    }
-
-    function filterInput(){
-        for (let i = 0; i < idFilters.length; i++) {
-            const e = idFilters[i];
-            var colIdx = parseInt(e.replaceAll('filter_',''));
-            var value = $("#"+e).val()
-            dtable.column(colIdx).search(value).draw();
-        }
-    }
-    
-
+  }
 </script>
 </body>
 

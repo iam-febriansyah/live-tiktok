@@ -13,12 +13,12 @@ module.exports = (sequelize, Sequelize) => {
         allowNull: false,
       },
       json_data: {
-        type: Sequelize.TEXT,
+        type: "LONGTEXT",
         allowNull: false,
       },
 
       created_at: {
-        type: "TIMESTAMP",
+        type: "DATETIME",
         defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
         allowNull: false,
       },
@@ -27,7 +27,8 @@ module.exports = (sequelize, Sequelize) => {
         allowNull: false,
       },
       updated_at: {
-        type: "TIMESTAMP",
+        type: "DATETIME",
+        defaultValue: null,
         allowNull: true,
       },
       updated_by: {
@@ -44,10 +45,16 @@ module.exports = (sequelize, Sequelize) => {
       tableName: "gift",
       indexes: [
         {
+          unique: true,
+          fields: ["gift_id"],
+        },
+        {
           unique: false,
           fields: ["room_id"],
         },
       ],
+      charset: "utf8mb4",
+      collate: "utf8mb4_unicode_ci",
     }
   );
   return gift;

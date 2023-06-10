@@ -20,25 +20,25 @@ module.exports = (sequelize, Sequelize) => {
         allowNull: false,
       },
       start_date: {
-        type: Sequelize.DATE,
+        type: "DATETIME",
         allowNull: true,
       },
       last_activity_date: {
-        type: Sequelize.DATE,
+        type: "DATETIME",
         allowNull: true,
       },
       expire_date: {
-        type: Sequelize.DATE,
+        type: "DATE",
         allowNull: false,
       },
       on_live: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        defaultValue: 0
+        defaultValue: 0,
       },
 
       created_at: {
-        type: "TIMESTAMP",
+        type: "DATETIME",
         defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
         allowNull: false,
       },
@@ -47,7 +47,7 @@ module.exports = (sequelize, Sequelize) => {
         allowNull: false,
       },
       updated_at: {
-        type: "TIMESTAMP",
+        type: "DATETIME",
         allowNull: true,
       },
       updated_by: {

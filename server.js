@@ -5,10 +5,12 @@ var express = require("express");
 var app = express();
 var cors = require("cors");
 var bodyParser = require("body-parser");
+var cookieParser = require("cookie-parser");
 var server = require("http").createServer(app);
 const methodOverride = require("method-override");
 const path = require("path");
 const session = require("express-session");
+var logger = require("morgan");
 
 var io = require("socket.io")(server, {
   cors: {
@@ -49,7 +51,9 @@ app.use(function (req, res, next) {
   next();
 });
 
+app.use(logger("dev"));
 app.use(express.json());
+app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
 app.use("/velzon", express.static(path.join(__dirname, "/public/")));
@@ -74,15 +78,16 @@ var authRoute = require("./app/auth/router");
 var dashboardRoute = require("./app/dashboard/router");
 var userRoute = require("./app/user/router");
 var giftRoute = require("./app/gift/router");
+var liveRoute = require("./app/live/router");
 var apiRoute = require("./app/api/router.js");
 require("./db/index.js")(app);
 app.use("/", authRoute);
 app.use("/dashboard", dashboardRoute);
 app.use("/user", userRoute);
 app.use("/gift", giftRoute);
+app.use("/live", liveRoute);
 app.use("/api", apiRoute);
 app.use("/api-doc", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-
 
 function html(account) {
   var http = process.env.HTTP;

@@ -1,7 +1,7 @@
 const dotenv = require("dotenv");
 dotenv.config();
 
-const { Sequelize, DataTypes  } = require("sequelize");
+const { Sequelize, DataTypes } = require("sequelize");
 
 const sequelize = new Sequelize(process.env.NAME_MYSQL, process.env.USER_MYSQL, process.env.PASSWORD_MYSQL, {
   host: process.env.HOST_MYSQL,
@@ -15,6 +15,10 @@ const sequelize = new Sequelize(process.env.NAME_MYSQL, process.env.USER_MYSQL, 
     acquire: 30000,
     idle: 10000,
     connectTimeout: 20000,
+  },
+  define: {
+    charset: "utf8",
+    collate: "utf8_general_ci",
   },
   dialectOptions: {
     // useUTC: false,
@@ -40,5 +44,6 @@ dbMysql.auth_user = require("./mysql/auth_user")(sequelize, Sequelize, DataTypes
 dbMysql.gift = require("./mysql/gift")(sequelize, Sequelize, DataTypes);
 dbMysql.room = require("./mysql/room")(sequelize, Sequelize, DataTypes);
 dbMysql.user = require("./mysql/user")(sequelize, Sequelize, DataTypes);
+dbMysql.tiktok_account = require("./mysql/tiktok_account")(sequelize, Sequelize, DataTypes);
 
 module.exports = dbMysql;

@@ -1,21 +1,33 @@
-
 const bcrypt = require("bcryptjs");
 
 async function dbAccess(db) {
   try {
     await db.sequelize.authenticate().then(function (err) {
       if (!err) {
-        db.sequelize.sync({ force: true }).then(async() => {
+        var force = true;
+        db.sequelize.sync({ force: force }).then(async () => {
           console.log(db.name + " Main Database already connected!");
-          const hashedPassword = await bcrypt.hash("1", 10);
-          var data = {
-            auth_user_id : 'admin',
-            email : 'admin@admin.com',
-            name : "Admin",
-            password : hashedPassword,
-            created_by : "admin"
+          if (force) {
+            const hashedPassword = await bcrypt.hash("1", 10);
+            var dataAuth = {
+              auth_user_id: "admin",
+              email: "admin@admin.com",
+              name: "Admin",
+              password: hashedPassword,
+              created_by: "admin",
+            };
+            await db.auth_user.create(dataAuth);
+
+            var dataUser = {
+              user_id: "admin",
+              domain: "admin.com",
+              email: "admin@admin.com",
+              license: "admin",
+              created_by: "admin",
+              expire_date: "2030-01-01",
+            };
+            await db.user.create(dataUser);
           }
-          await db.auth_user.create(data);
         });
       }
     });
