@@ -59,22 +59,21 @@ module.exports = {
         }
 
         var allRoom = await dbMysql.room.findAll({ where: { user_id: data.user_id, end_live_date: { [Op.eq]: null } } });
+        var room_id = null;
         for (let i = 0; i < allRoom.length; i++) {
           const e = allRoom[i];
           var id = e.id;
           var now = help.dateTimeNow();
+          room_id = e.room_id;
           await dbMysql.room.update({ end_live_date: now, end_reason: "Change username tiktok" }, { where: { id: id } });
         }
         
         var acc = await dbMysql.tiktok_account.findOne({ where: { username: username } });
         var startDate = null;
-        var room_id = null;
         if(acc){
           if(acc.isRunning == 1){
             startDate = help.dateTimeNow();
-            room_id = acc.room_id;
           }
-          console.log(acc)
         }
         await dbMysql.room.create({ room_id : room_id, user_id: data.user_id, tiktok_username: username, created_by: license, start_live_date : startDate });
 
