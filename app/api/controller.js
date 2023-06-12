@@ -65,7 +65,17 @@ module.exports = {
           var now = help.dateTimeNow();
           await dbMysql.room.update({ end_live_date: now, end_reason: "Change username tiktok" }, { where: { id: id } });
         }
-        await dbMysql.room.create({ user_id: data.user_id, tiktok_username: username, created_by: license });
+        
+        var acc = await dbMysql.tiktok_account.findOne({ where: { username: username } });
+        var startDate = null;
+        var room_id = null;
+        if(acc){
+          if(acc.isRunning){
+            startDate = help.dateTimeNow();
+            room_id = acc.room_id;
+          }
+        }
+        await dbMysql.room.create({ room_id : room_id, user_id: data.user_id, tiktok_username: username, created_by: license, start_live_date : startDate });
 
         await help.upsert(dbMysql.tiktok_account, { username: username }, { username: username });
         require("../live")(req.io);

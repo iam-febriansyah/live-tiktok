@@ -20,7 +20,7 @@ async function liveStream(acc, io) {
       .then(async (state) => {
         var now = help.dateTimeNow();
         for (let i = 0; i < licenses.length; i++) {
-          console.log(licenses[i])
+          console.log(licenses[i]);
           const id = licenses[i].id;
           licenses[i].room_id = state.roomId;
           await dbMysql.room.update({ room_id: state.roomId, start_live_date: now }, { where: { id: id, tiktok_username: tiktok_username } });
