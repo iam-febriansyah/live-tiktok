@@ -19,6 +19,7 @@ async function liveStream(acc, io) {
       .connect()
       .then(async (state) => {
         var now = help.dateTimeNow();
+        console.log("CONNECT " + tiktok_username, state.roomId);
         for (let i = 0; i < licenses.length; i++) {
           const id = licenses[i].id;
           licenses[i].room_id = state.roomId;
@@ -26,11 +27,12 @@ async function liveStream(acc, io) {
         }
       })
       .catch(async (err) => {
+        console.log(err);
         var now = help.dateTimeNow();
         for (let i = 0; i < licenses.length; i++) {
           const id = licenses[i].id;
           const license = licenses[i].license;
-          await dbMysql.room.update({ room_id: license + ":Offline:" + tiktok_username, start_live_date: now, end_live_date: now, end_reason: err.message }, { where: { id: id, tiktok_username: tiktok_username } });
+          await dbMysql.room.update({ room_id: license + ":Offline:" + tiktok_username, start_live_date: now, end_live_date: now, end_reason: "Error connect" }, { where: { id: id, tiktok_username: tiktok_username } });
         }
         await dbMysql.tiktok_account.update({ status: 0, isRunning: 0 }, { where: { username: tiktok_username } });
       });
@@ -38,10 +40,9 @@ async function liveStream(acc, io) {
     tiktokLiveConnection.on("chat", async (data) => {
       data.createdAt = help.dateTimeNow();
       for (let i = 0; i < licenses.length; i++) {
-        var chat_id_key = uuidv1();
-        data.chat_id_key = chat_id_key;
         const license = licenses[i].license;
-        socket.emitChat(io, data, tiktok_username, license);
+        console.log("CHAT " + tiktok_username + " " + license, convertChat(data));
+        socket.emitChat(io, convertChat(data), tiktok_username, license);
       }
     });
 
@@ -52,7 +53,8 @@ async function liveStream(acc, io) {
         const license = licenses[i].license;
         const room_id = licenses[i].room_id;
         data.gift_id_key = gift_id_key;
-        socket.emitGift(io, data, tiktok_username, license);
+        console.log("GIFT " + tiktok_username + " " + license, convertGift(data));
+        socket.emitGift(io, convertGift(data), tiktok_username, license);
         // var json_data = convertGift(data);
         // if (room_id) {
         //   worker.worker_insertGift({ room_id: room_id, json_data: json_data, created_by: license });
@@ -86,28 +88,51 @@ async function liveStream(acc, io) {
 
 function convertGift(data) {
   var dataInsert = {
-    msgId: data.msgId,
-    giftId: data.giftId,
-    repeatCount: data.repeatCount,
+    gift_id_key: data.gift_id_key,
+    msgId: data.msgId.toString(),
+    giftId: data.giftId.toString(),
+    repeatCount: data.repeatCount.toString(),
     groupId: data.groupId,
     secUid: data.secUid,
     userId: data.userId,
     uniqueId: data.uniqueId,
     nickname: data.nickname,
-    profilePictureUrl: data.profilePictureUrl,
-    createTime: data.createTime,
-    gift_id: data.gift.gift_id,
-    repeat_count: data.gift.repeat_count,
-    repeat_end: data.gift.repeat_end,
-    gift_type: data.gift.gift_type,
-    describe: data.describe,
-    giftName: data.giftName,
-    diamondCount: data.diamondCount,
-    giftPictureUrl: data.giftPictureUrl,
-    timestamp: data.timestamp,
+    profilePictureUrl: data.profilePictureUrl.toString(),
+    createTime: data.createTime.toString(),
+    gift_id: data.gift.gift_id.toString(),
+    repeat_count: data.gift.repeat_count.toString(),
+    repeat_end: data.gift.repeat_end.toString(),
+    gift_type: data.gift.gift_type.toString(),
+    describe: data.describe.toString(),
+    giftName: data.giftName.toString(),
+    diamondCount: data.diamondCount.toString(),
+    giftPictureUrl: data.giftPictureUrl.toString(),
+    timestamp: data.timestamp.toString(),
     receiverUserId: data.receiverUserId,
   };
-  return JSON.stringify(dataInsert);
+  return dataInsert;
+}
+
+function convertChat(data) {
+  var createdAt = help.dateToString(parseInt(data.createTime));
+  var chat_id_key = uuidv1();
+  var dataInsert = {
+    chat_id_key: chat_id_key,
+    msgId: data.msgId.toString(),
+    secUid: data.secUid.toString(),
+    userId: data.userId.toString(),
+    uniqueId: data.uniqueId.toString(),
+    nickname: data.nickname.toString(),
+    profilePictureUrl: data.profilePictureUrl.toString(),
+    createTime: data.createTime.toString(),
+    comment: data.comment.toString(),
+    followRole: data.followRole.toString(),
+    isModerator: data.isModerator.toString(),
+    isNewGifter: data.isNewGifter.toString(),
+    isSubscriber: data.isSubscriber.toString(),
+    createdAt: createdAt.toString(),
+  };
+  return dataInsert;
 }
 
 module.exports = async function (io) {
@@ -116,7 +141,7 @@ module.exports = async function (io) {
     const username = tiktokAccount[j].username;
     var query = `SELECT r.id, r.room_id, u.license FROM room r 
                  INNER JOIN user u ON u.user_id = r.user_id
-                 WHERE r.tiktok_username = '${username}' AND r.start_live_date IS NULL AND r.end_live_date IS NULL`;
+                 WHERE r.tiktok_username = '${username}' AND r.end_live_date IS NULL`;
     licenses = await dbMysql.sequelize.query(query, { type: QueryTypes.SELECT });
     liveStream(tiktokAccount[j], io);
   }
