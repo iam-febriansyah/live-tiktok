@@ -52,13 +52,12 @@ async function liveStream(acc, io) {
         var gift_id_key = uuidv1();
         const license = licenses[i].license;
         const room_id = licenses[i].room_id;
-        data.gift_id_key = gift_id_key;
-        console.log("GIFT " + tiktok_username + " " + license, convertGift(data));
-        socket.emitGift(io, convertGift(data), tiktok_username, license);
-        // var json_data = convertGift(data);
-        // if (room_id) {
-        //   worker.worker_insertGift({ room_id: room_id, json_data: json_data, created_by: license });
-        // }
+        socket.emitGift(io, data, tiktok_username, license);
+        var json_data = convertGift(data);
+        json_data.createdAt = help.dateTimeNow();
+        if (room_id) {
+          worker.worker_insertGift({ room_id: room_id, json_data: json_data, created_by: license });
+        }
       }
     });
 
