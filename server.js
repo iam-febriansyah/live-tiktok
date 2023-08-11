@@ -41,7 +41,10 @@ app.use(
     secret: "live-tiktok",
     resave: false,
     saveUninitialized: true,
-    cookie: {},
+    cookie: {
+      secure: true,
+      maxAge: 60000,
+    },
   })
 );
 
