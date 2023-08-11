@@ -8,7 +8,7 @@ const sequelize = new Sequelize(process.env.NAME_MYSQL, process.env.USER_MYSQL, 
   dialect: "mysql",
   operatorsAliases: 0,
   logging: false,
-  // port: process.env.PORT_MYSQL,
+  port: process.env.PORT_MYSQL,
   pool: {
     max: 5,
     min: 0,
