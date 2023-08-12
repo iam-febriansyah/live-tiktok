@@ -35,21 +35,20 @@ async function liveStream(acc, io) {
       });
 
     tiktokLiveConnection.on("chat", async (data) => {
-      data.createdAt = help.dateTimeNow();
       for (let i = 0; i < licenses.length; i++) {
         const license = licenses[i].license;
+        data.createdAt = help.dateTimeNow();
         socket.emitChat(io, data, tiktok_username, license);
       }
     });
 
     tiktokLiveConnection.on("gift", async (data) => {
-      data.createdAt = help.dateTimeNow();
       for (let i = 0; i < licenses.length; i++) {
         const license = licenses[i].license;
         const room_id = licenses[i].room_id;
+        data.createdAt = help.dateTimeNow();
         socket.emitGift(io, data, tiktok_username, license);
         var json_data = convertGift(data);
-        json_data.createdAt = help.dateTimeNow();
         if (room_id) {
           worker.worker_insertGift({ room_id: room_id, json_data: json_data, created_by: license });
         }
