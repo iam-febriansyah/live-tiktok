@@ -29,8 +29,6 @@ async function dbAccess(db) {
             };
             await db.user.create(dataUser);
           }
-          var now = help.dateTimeNow();
-          await db.room.update({ end_live_date: now, end_reason: "Restart Server" });
         });
       }
     });
