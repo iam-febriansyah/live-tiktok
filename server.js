@@ -91,6 +91,7 @@ app.use("/gift", giftRoute);
 app.use("/live", liveRoute);
 app.use("/api", apiRoute);
 app.use("/api-doc", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+require("./app/live")(io);
 
 function html(account) {
   var http = process.env.HTTP;

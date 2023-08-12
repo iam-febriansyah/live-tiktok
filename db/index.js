@@ -1,10 +1,11 @@
 const bcrypt = require("bcryptjs");
+const help = require("../helpers/general");
 
 async function dbAccess(db) {
   try {
     await db.sequelize.authenticate().then(function (err) {
       if (!err) {
-        var force = true;
+        var force = false;
         db.sequelize.sync({ force: force }).then(async () => {
           console.log(db.name + " Main Database already connected!");
           if (force) {
@@ -28,6 +29,8 @@ async function dbAccess(db) {
             };
             await db.user.create(dataUser);
           }
+          var now = help.dateTimeNow();
+          await db.room.update({ end_live_date: now, end_reason: "Restart Server" });
         });
       }
     });
