@@ -1,9 +1,7 @@
-const pdf = require("html-pdf");
 const path = require("path");
 const ejs = require("ejs");
 const fs = require("fs");
 const moment = require("moment");
-const math = require("mathjs");
 const { v1: uuidv1 } = require("uuid");
 const { dirname } = require("path");
 const { QueryTypes } = require("sequelize");
